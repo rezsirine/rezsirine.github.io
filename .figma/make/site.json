@@ -1,0 +1,15 @@
+{
+  "description": "Portfolio de Sirine Rezgui — étudiante en Génie Logiciel et Systèmes Intelligents Avancés : projets IA, full-stack et CV.",
+  "title": "Sirine Rezgui — Portfolio",
+  "language": "fr",
+  "robots": {
+    "index": true
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  },
+  "icons": {
+    "icon": "favicon.svg"
+  }
+}
