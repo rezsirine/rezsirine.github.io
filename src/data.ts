@@ -7,8 +7,8 @@ export const profile = {
   initials: "SR",
   title: "Étudiante en Génie Logiciel & Systèmes d’Information",
   email: "sirine.rezgui@ensi-uma.tn",
-  phone: "55194119",
-  phoneHref: "+21655194119",
+  phone: "25147852",
+  phoneHref: "+21625147852",
   location: "Ariana, Tunisie",
   linkedinLabel: "sirine rezgui",
   linkedin: "" as string, // URL LinkedIn à renseigner (non présente dans le CV)
