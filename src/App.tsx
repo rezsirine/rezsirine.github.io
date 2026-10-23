@@ -134,7 +134,7 @@ export default function App() {
           <span>Sirine<span className="muted">.dev</span></span>
         </a>
         <nav className={menuOpen ? "nav-links open" : "nav-links"} aria-label="Main navigation">
-          {[["About", "apropos"], ["Skills", "competences"], ["Projects", "projets"], ["Experience", "parcours"]].map(([label, id], index) => (
+          {[["About", "apropos"], ["Experience", "parcours"], ["Projects", "projets"], ["Skills", "competences"]].map(([label, id], index) => (
             <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
               <span>0{index + 1}.</span>{label}
             </a>
@@ -198,6 +198,18 @@ export default function App() {
           </div>
           <a className="scroll-cue" href="#apropos"><span>Discover</span><i><Icon name="arrow" size={15} /></i></a>
         </section>
+
+        <div className="tech-marquee" aria-label="Technologies and areas of focus">
+          <div className="tech-marquee-track">
+            {[0, 1].map((copy) => (
+              <div className="tech-marquee-group" key={copy} aria-hidden={copy === 1}>
+                {["React", "TypeScript", "Python", "Django", "Spring Boot", "Machine Learning", "LLMs & RAG", "PostgreSQL", "Docker", "Agile / Scrum"].map((technology) => (
+                  <span key={technology}><i />{technology}</span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
 
         <section id="apropos" className="section about">
           <SectionTitle eyebrow="About" title="From full-stack development to intelligent systems." text="My studies bring software engineering and artificial intelligence together." />
