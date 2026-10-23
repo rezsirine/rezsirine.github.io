@@ -1,5 +1,5 @@
-import { FormEvent, ReactNode, useState } from "react";
-import { profile, projects, skillGroups, dataScience, experiences, education, languages } from "./data";
+import { FormEvent, ReactNode, useEffect, useState } from "react";
+import { profile, projects, skillGroups, dataScience, experiences, education, languages, certifications, strengths } from "./data";
 
 type IconName =
   | "arrow"
@@ -60,31 +60,91 @@ function SectionTitle({ eyebrow, title, text }: { eyebrow: string; title: string
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<"dark" | "light">(() => (localStorage.getItem("sirine-theme") as "dark" | "light") || "dark");
+  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
-  function submitForm(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("sirine-theme", theme);
+  }, [theme]);
+
+  useEffect(() => {
+    if (formStatus !== "success" && formStatus !== "error") return;
+    const timeout = window.setTimeout(() => setFormStatus("idle"), 5500);
+    return () => window.clearTimeout(timeout);
+  }, [formStatus]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    }), { threshold: 0.12 });
+    document.querySelectorAll(".section, .project-card, .timeline-item").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  async function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const subject = encodeURIComponent(String(form.get("subject") ?? ""));
-    const text = `${form.get("message") ?? ""}\n\n— ${form.get("name") ?? ""} (${form.get("email") ?? ""})`;
-    window.location.href = `mailto:${profile.email}?subject=${subject}&body=${encodeURIComponent(text)}`;
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
+    setFormStatus("sending");
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: form.get("name"),
+          email: form.get("email"),
+          _replyto: form.get("email"),
+          subject: form.get("subject"),
+          _subject: `Portfolio enquiry — ${String(form.get("subject") ?? "New message")}`,
+          _template: "table",
+          message: form.get("message"),
+          _honey: form.get("_honey"),
+        }),
+      });
+      if (!response.ok) throw new Error("Form submission failed");
+      const result = await response.json();
+      if (result.success === false) throw new Error("Form submission failed");
+      setFormStatus("success");
+      formElement.reset();
+    } catch {
+      setFormStatus("error");
+    }
   }
 
   return (
     <div className="site-shell">
+      {(formStatus === "success" || formStatus === "error") && (
+        <div className={`form-toast ${formStatus}`} role={formStatus === "success" ? "status" : "alert"} aria-live={formStatus === "success" ? "polite" : "assertive"}>
+          <span className="toast-mark" aria-hidden="true">{formStatus === "success" ? "✓" : "!"}</span>
+          <div className="toast-copy">
+            <strong>{formStatus === "success" ? "Message sent" : "Message not sent"}</strong>
+            <p>{formStatus === "success" ? "Thank you for reaching out. I’ll get back to you soon." : "Please try again, or email me directly."}</p>
+          </div>
+          {formStatus === "error" && <a className="toast-email" href={`mailto:${profile.email}`}>Email</a>}
+          <button className="toast-close" type="button" onClick={() => setFormStatus("idle")} aria-label="Dismiss notification"><Icon name="x" size={16} /></button>
+        </div>
+      )}
       <header className="topbar">
-        <a className="brand" href="#accueil" aria-label="Accueil">
+        <a className="brand" href="#accueil" aria-label="Home">
           <span className="brand-mark">&lt;SR/&gt;</span>
           <span>Sirine<span className="muted">.dev</span></span>
         </a>
-        <nav className={menuOpen ? "nav-links open" : "nav-links"} aria-label="Navigation principale">
-          {[["À propos", "apropos"], ["Compétences", "competences"], ["Projets", "projets"], ["Parcours", "parcours"]].map(([label, id], index) => (
+        <nav className={menuOpen ? "nav-links open" : "nav-links"} aria-label="Main navigation">
+          {[["About", "apropos"], ["Skills", "competences"], ["Projects", "projets"], ["Experience", "parcours"]].map(([label, id], index) => (
             <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
               <span>0{index + 1}.</span>{label}
             </a>
           ))}
-          <a className="nav-cta" href="#contact" onClick={() => setMenuOpen(false)}>Me contacter <Icon name="arrow" /></a>
+          <a className="nav-cta" href="#contact" onClick={() => setMenuOpen(false)}>Contact me <Icon name="arrow" /></a>
         </nav>
-        <button className="menu-button" type="button" aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"} onClick={() => setMenuOpen(!menuOpen)}>
+        <button className="theme-toggle" type="button" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`} title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}>
+          <span aria-hidden="true">{theme === "dark" ? "☼" : "☾"}</span><small>{theme === "dark" ? "Light" : "Dark"}</small>
+        </button>
+        <button className="menu-button" type="button" aria-label={menuOpen ? "Close menu" : "Open menu"} onClick={() => setMenuOpen(!menuOpen)}>
           <Icon name={menuOpen ? "x" : "menu"} size={22} />
         </button>
       </header>
@@ -92,22 +152,22 @@ export default function App() {
       <main>
         <section id="accueil" className="hero">
           <div className="hero-copy">
-            <div className="availability"><i /> Recherche un stage</div>
-            <p className="intro-line">Bonjour, je suis</p>
+            <div className="availability"><i /> Seeking a Final-Year Internship</div>
+            <p className="intro-line">Hello, I’m</p>
             <h1>{profile.name}<span>.</span></h1>
-            <h2>Génie Logiciel<br />&amp; Systèmes Intelligents</h2>
-            <p className="hero-text">Étudiante en double cursus, je conçois des <strong>applications web full-stack</strong> et des <strong>systèmes pilotés par l’IA</strong> (IA générative, LLM, RAG).</p>
+            <h2>Full-Stack<br />&amp; Applied AI</h2>
+            <p className="hero-text">A final-year Software Engineering student turning complex challenges into <strong>reliable web products</strong> and <strong>applied AI solutions</strong>.</p>
             <div className="hero-actions">
-              <a className="button primary" href="#projets">Voir mes projets <Icon name="arrow" /></a>
-              <a className="button secondary" href={profile.cv} download><Icon name="download" /> Télécharger mon CV</a>
+              <a className="button primary" href="#projets">Explore my work <Icon name="arrow" /></a>
+              <a className="button secondary" href={profile.cv} download><Icon name="download" /> Download my CV</a>
             </div>
             <div className="hero-meta">
               <span><Icon name="map" size={16} /> {profile.location}</span>
-              <span><i /> FR · EN · DE</span>
+              <span><i /> AR · FR · EN · DE</span>
             </div>
           </div>
 
-          <div className="hero-visual" aria-label="Profil de Sirine Rezgui">
+          <div className="hero-visual" aria-label="Sirine Rezgui profile">
             <div className="orbit orbit-one" />
             <div className="orbit orbit-two" />
             <div className="profile-card">
@@ -118,53 +178,56 @@ export default function App() {
               </div>
               <div className="avatar-frame">
                 <div className="avatar-glow" />
-                <div className="avatar"><span>{profile.initials}</span></div>
+                <div className="avatar">
+                  <img className="avatar-photo" src={`${import.meta.env.BASE_URL}images/profile.jpg.png`} alt="Portrait of Sirine Rezgui" onLoad={(event) => { const fallback = event.currentTarget.nextElementSibling as HTMLElement | null; if (fallback) fallback.style.display = "none"; }} onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                  <span>{profile.initials}</span>
+                </div>
                 <div className="floating-tag tag-react">&lt;/&gt;</div>
                 <div className="floating-tag tag-db">AI</div>
               </div>
               <div className="profile-code">
                 <p><em>01</em> <b>const</b> sirine = {"{"}</p>
                 <p><em>02</em> &nbsp;&nbsp;stack: <strong>"React · Node · Python"</strong>,</p>
-                <p><em>03</em> &nbsp;&nbsp;focus: <strong>"Generative AI"</strong>,</p>
-                <p><em>04</em> &nbsp;&nbsp;seeking: <strong>"internship"</strong></p>
+                <p><em>03</em> &nbsp;&nbsp;focus: <strong>"Applied AI"</strong>,</p>
+                <p><em>04</em> &nbsp;&nbsp;seeking: <strong>"Final-year internship"</strong></p>
                 <p><em>05</em> {"}"}</p>
               </div>
             </div>
-            <div className="experience-chip"><strong>2</strong><span>diplômes<br />en cours</span></div>
+            <div className="experience-chip"><strong>2</strong><span>degrees<br />in progress</span></div>
             <div className="stack-chip"><Icon name="terminal" /><span>Full-stack.<br /><strong>AI-driven.</strong></span></div>
           </div>
-          <a className="scroll-cue" href="#apropos"><span>Découvrir</span><i><Icon name="arrow" size={15} /></i></a>
+          <a className="scroll-cue" href="#apropos"><span>Discover</span><i><Icon name="arrow" size={15} /></i></a>
         </section>
 
         <section id="apropos" className="section about">
-          <SectionTitle eyebrow="À propos" title="Du web full-stack aux systèmes intelligents." text="Un double cursus pour relier ingénierie logicielle et intelligence artificielle." />
+          <SectionTitle eyebrow="About" title="From full-stack development to intelligent systems." text="My studies bring software engineering and artificial intelligence together." />
           <div className="about-grid">
             <div className="about-statement">
               <span className="quote-mark">“</span>
-              <p>Passionnée par les <strong>systèmes intelligents</strong>, l’<strong>IA générative</strong> et les pratiques modernes d’ingénierie logicielle.</p>
+              <p>Focused on <strong>intelligent systems</strong>, <strong>generative AI</strong>, and modern software engineering.</p>
             </div>
             <div className="about-copy">
               <p>{profile.summary}</p>
-              <a className="text-link" href="#parcours">Découvrir mon parcours <Icon name="arrow" /></a>
+              <a className="text-link" href="#parcours">Explore my journey <Icon name="arrow" /></a>
             </div>
             <div className="principles">
-              <div><span>01</span><strong>Développement full-stack</strong><small>React, Next.js, Node.js, Python.</small></div>
-              <div><span>02</span><strong>Data science &amp; IA/ML</strong><small>Machine Learning, LLM, RAG, IA générative.</small></div>
-              <div><span>03</span><strong>Méthodes Agile</strong><small>Scrum, Jira, gestion des merges.</small></div>
+              <div><span>01</span><strong>Full-stack development</strong><small>React, Next.js, Node.js, Python.</small></div>
+              <div><span>02</span><strong>Data science &amp; AI/ML</strong><small>Machine learning, LLMs, RAG, generative AI.</small></div>
+              <div><span>03</span><strong>Agile practices</strong><small>Scrum, Jira, code reviews and merges.</small></div>
             </div>
           </div>
         </section>
 
         <section id="competences" className="section skills-section">
-          <SectionTitle eyebrow="Compétences" title="Mes technologies." text="Les outils que j’utilise dans mes projets et expériences." />
+          <SectionTitle eyebrow="Skills" title="My toolkit." text="Technologies I use across projects and team environments." />
           {skillGroups.map((group) => (
             <div className="skill-group" key={group.title}>
               <h3 className="skill-group-title">{group.title}</h3>
               <div className="skills-grid">
-                {group.items.map(([name, path], index) => (
+                {group.items.map(([name], index) => (
                   <div className="skill-card" key={name}>
                     <span className="skill-index">{String(index + 1).padStart(2, "0")}</span>
-                    <img src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${path}`} alt="" loading="lazy" onError={(e) => { e.currentTarget.style.visibility = "hidden"; }} />
+                    <span className="skill-monogram" aria-hidden="true">{name.replace(/[^a-zA-Z0-9]/g, "").slice(0, 2).toUpperCase()}</span>
                     <strong>{name}</strong>
                     <span className="skill-line" />
                   </div>
@@ -173,13 +236,13 @@ export default function App() {
             </div>
           ))}
           <div className="skill-group">
-            <h3 className="skill-group-title">Data Science</h3>
+            <h3 className="skill-group-title">AI &amp; Data Science</h3>
             <div className="tags ds-tags">{dataScience.map((item) => <span key={item}>{item}</span>)}</div>
           </div>
         </section>
 
         <section id="projets" className="section projects-section">
-          <SectionTitle eyebrow="Projets" title="Des projets autour de l’IA et du web." text="Trois projets académiques axés sur l’IA explicable, la santé et les RH." />
+          <SectionTitle eyebrow="Projects" title="Building at the intersection of AI and software." text="Selected work across explainable AI, healthcare, and predictive maintenance." />
           <div className="projects-list">
             {projects.map((project) => (
               <article className="project-card" key={project.title}>
@@ -199,8 +262,8 @@ export default function App() {
                   <div className="tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
                   {(project.github || project.demo) && (
                     <div className="project-links">
-                      {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer"><Icon name="github" /> Voir sur GitHub</a>}
-                      {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer"><Icon name="external" /> Live Demo</a>}
+                      {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer"><Icon name="github" /> View on GitHub</a>}
+                      {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer"><Icon name="external" /> Live demo</a>}
                     </div>
                   )}
                 </div>
@@ -210,10 +273,10 @@ export default function App() {
         </section>
 
         <section id="parcours" className="section journey-section">
-          <SectionTitle eyebrow="Parcours" title="Expérience &amp; formation." />
+          <SectionTitle eyebrow="Experience" title="Experience &amp; education." />
           <div className="journey-layout">
             <div className="journey-aside">
-              <h3 className="skill-group-title">Formation</h3>
+              <h3 className="skill-group-title">Education</h3>
               <div className="education-list">
                 {education.map((item) => (
                   <div key={item.degree}>
@@ -223,9 +286,13 @@ export default function App() {
                   </div>
                 ))}
               </div>
-              <h3 className="skill-group-title">Langues</h3>
+              <h3 className="skill-group-title">Languages</h3>
               <div className="tags">{languages.map((l) => <span key={l}>{l}</span>)}</div>
-              <a className="button secondary" href={profile.cv} download style={{ marginTop: 26 }}>Télécharger mon CV <Icon name="download" /></a>
+              <h3 className="skill-group-title credential-title">Certifications</h3>
+              <div className="credential-list">{certifications.map((item) => <span key={item}>{item}</span>)}</div>
+              <h3 className="skill-group-title credential-title">Core strengths</h3>
+              <div className="tags">{strengths.map((item) => <span key={item}>{item}</span>)}</div>
+              <a className="button secondary" href={profile.cv} download style={{ marginTop: 26 }}>Download my CV <Icon name="download" /></a>
             </div>
             <div className="timeline">
               {experiences.map((item, index) => (
@@ -247,8 +314,8 @@ export default function App() {
           <div className="contact-panel">
             <div className="contact-copy">
               <span className="eyebrow"><span>//</span> Contact</span>
-              <h2>À la recherche d’un <em>stage.</em></h2>
-              <p>Un projet IA ou web à construire ? Écrivez-moi, je serai ravie d’échanger.</p>
+              <h2>Looking for a <em>final-year internship.</em></h2>
+              <p>Have an AI or web project in mind? I’d be happy to hear from you.</p>
               <a className="email-link" href={`mailto:${profile.email}`}><Icon name="mail" /> {profile.email}</a>
               <a className="email-link" href={`tel:${profile.phoneHref}`}><Icon name="phone" /> {profile.phone}</a>
               <span className="email-link"><Icon name="map" /> {profile.location}</span>
@@ -258,13 +325,16 @@ export default function App() {
               </div>
             </div>
             <form className="contact-form" onSubmit={submitForm}>
+              <input type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" className="form-honeypot" />
               <div className="field-row">
-                <label>Votre nom<input required name="name" placeholder="Votre nom" /></label>
-                <label>Votre email<input required name="email" type="email" placeholder="vous@entreprise.com" /></label>
+                <label>Your name<input required name="name" placeholder="Your name" /></label>
+                <label>Your email<input required name="email" type="email" placeholder="you@company.com" /></label>
               </div>
-              <label>Sujet<input required name="subject" placeholder="Objet du message" /></label>
-              <label>Votre message<textarea required name="message" rows={5} placeholder="Bonjour Sirine, ..." /></label>
-              <button className="button primary submit-button" type="submit">Envoyer par e-mail <Icon name="send" /></button>
+              <label>Subject<input required name="subject" placeholder="Message subject" /></label>
+              <label>Your message<textarea required name="message" rows={5} placeholder="Hi Sirine, ..." /></label>
+              <button className="button primary submit-button" type="submit" disabled={formStatus === "sending"}>
+                {formStatus === "sending" ? "Sending..." : "Send message"} <Icon name="send" />
+              </button>
             </form>
           </div>
         </section>
@@ -273,7 +343,7 @@ export default function App() {
       <footer>
         <a className="brand" href="#accueil"><span className="brand-mark">&lt;SR/&gt;</span><span>Sirine<span className="muted">.dev</span></span></a>
         <p>© 2026 {profile.name}.</p>
-        <a className="back-top" href="#accueil">Retour en haut <span>↑</span></a>
+        <a className="back-top" href="#accueil">Back to top <span>↑</span></a>
       </footer>
     </div>
   );

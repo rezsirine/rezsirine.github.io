@@ -1,159 +1,76 @@
-// Toutes les données du portfolio sont centralisées ici (source : CV de Sirine Rezgui).
-// Pour ajouter un lien : renseigner `github` / `demo` d'un projet. Un bouton n'apparaît que si l'URL existe.
-
+// Portfolio content based on the supplied CV.
 export const profile = {
-  name: "Rezgui Sirine",
+  name: "Sirine Rezgui",
   firstName: "Sirine",
   initials: "SR",
-  title: "Étudiante en Génie Logiciel & Systèmes d’Information",
+  title: "Final-Year Software Engineering Student | Full-Stack & AI",
   email: "sirine.rezgui@ensi-uma.tn",
-  phone: "25147852",
-  phoneHref: "+21625147852",
-  location: "Ariana, Tunisie",
-  linkedinLabel: "sirine rezgui",
-  linkedin: "" as string, // URL LinkedIn à renseigner (non présente dans le CV)
-  github: "" as string, // URL du profil GitHub à renseigner
+  phone: "+216 55194119",
+  phoneHref: "+216 55194119",
+  location: "Ariana, Tunisia",
+  linkedinLabel: "LinkedIn",
+  linkedin: "" as string,
+  github: "" as string,
   cv: `${import.meta.env.BASE_URL}CV_Sirine_Rezgui.pdf`,
-  summary:
-    "Étudiante en double cursus : cycle ingénieur en Génie Logiciel et Master en Systèmes Intelligents Avancés. Je maîtrise le développement full-stack (React, Next.js, Node.js, Python), la data science et les techniques d’IA/ML. Passionnée par les systèmes intelligents, l’IA générative et les pratiques modernes d’ingénierie logicielle, je recherche un stage pour contribuer à des produits pilotés par l’IA et des applications web scalables.",
+  summary: "Final-year Software Engineering student specializing in software engineering and information systems. I combine full-stack development, digital product design, and applied artificial intelligence. Adaptable, proactive, and comfortable working in Agile teams, I am seeking a final-year project internship in software engineering, information systems, or applied AI.",
 };
 
 export type Project = {
-  index: string;
-  category: string;
-  title: string;
-  org: string;
-  period: string;
-  description: string;
-  features: string[];
-  tags: string[];
-  icon: "brain" | "heart" | "users";
-  github?: string;
-  demo?: string;
+  index: string; category: string; title: string; org: string; period: string;
+  description: string; features: string[]; tags: string[];
+  icon: "brain" | "heart" | "users"; github?: string; demo?: string;
 };
 
 export const projects: Project[] = [
   {
-    index: "01",
-    category: "IA explicable · Systèmes multi-agents",
-    title: "Explainable AI Framework for Multi-Agent Systems",
-    org: "ENSI",
-    period: "2026 — Présent",
-    description:
-      "Framework d’IA explicable pour systèmes multi-agents, conçu pour rendre le raisonnement des agents autonomes transparent et analysable.",
-    features: [
-      "Architecture cognitive « White-Box » basée sur Llama-3 (API Groq) et le paradigme ReAct pour extraire et analyser le raisonnement des agents autonomes.",
-      "Moteur de simulation contrefactuelle calculant l’influence sociale causale.",
-      "Génération dynamique de graphes de connaissances causaux (NetworkX) pour éviter la surcharge cognitive.",
-    ],
-    tags: ["Llama-3", "Groq API", "ReAct", "NetworkX", "Python"],
-    icon: "brain",
+    index: "01", category: "Industry · Predictive Maintenance", title: "SmartFactory Twin",
+    org: "TEK-UP University", period: "March — May 2026",
+    description: "An industrial digital twin for real-time equipment monitoring and failure prediction from IoT time-series data.",
+    features: ["Real-time dashboard, multi-level alerts, and automated PDF maintenance reports.", "LSTM Autoencoder and GRU models for anomaly detection and failure classification (AUC 0.90; failures detected up to 15 cycles in advance).", "YOLOv8 visual inspection, Vitest/Pytest quality tests, and Docker deployment with GitHub Actions CI/CD."],
+    tags: ["React", "Django REST", "FastAPI", "PyTorch", "YOLOv8", "Docker"], icon: "brain",
   },
   {
-    index: "02",
-    category: "Santé · Microservices & IA",
-    title: "Telemedicine & AI-Assisted Diagnosis Platform",
-    org: "TEK UP University",
-    period: "2026 — Présent",
-    description:
-      "Plateforme de télémédecine avec assistance au pré-diagnostic par IA, reposant sur une architecture microservices.",
-    features: [
-      "Architecture microservices (ASP.NET Core, Blazor) pour la gestion sécurisée des données médicales et des interfaces utilisateur.",
-      "Microservice IA (Python, FastAPI, RAG, LLM) dédié à l’assistance au pré-diagnostic automatisé.",
-    ],
-    tags: ["ASP.NET Core", "Blazor", "Python", "FastAPI", "RAG", "LLM"],
-    icon: "heart",
+    index: "02", category: "Healthcare · Multi-Agent Systems", title: "Sympnet-CDSS",
+    org: "TEK-UP University", period: "March 2026",
+    description: "A telemedicine and clinical decision-support platform built on a microservices architecture with a multi-agent AI copilot.",
+    features: [".NET 8 and Blazor application with role-based JWT authentication for doctors and patients.", "Real-time SignalR notifications, Whisper transcription, and prescription validation against PubMed guidance.", "AI diagnostic copilot (FastAPI, Llama 3, pgvector RAG) and clinical dashboard."],
+    tags: ["ASP.NET Core", "Blazor", "FastAPI", "Llama 3", "RAG", "pgvector"], icon: "heart",
   },
   {
-    index: "03",
-    category: "RH · IA générative",
-    title: "HR Vision",
-    org: "TEK UP University",
-    period: "2025 — Présent",
-    description:
-      "Application RH intégrant authentification sécurisée et un prédicteur d’offres d’emploi propulsé par l’IA.",
-    features: [
-      "Système d’authentification avec récupération de mot de passe et contrôle d’accès par rôles.",
-      "Prédicteur d’offres d’emploi basé sur Flan-T5, générant des posts LinkedIn personnalisés à partir d’un intitulé de poste et les publiant automatiquement via l’API LinkedIn.",
-      "Gestion des conflits de merge et suivi d’avancement avec Jira (Agile/Scrum).",
-    ],
-    tags: ["Flan-T5", "API LinkedIn", "Authentification", "Jira", "Scrum"],
-    icon: "users",
+    index: "03", category: "HR · ERP & Generative AI", title: "ERP_RH",
+    org: "TEK-UP University", period: "October 2026",
+    description: "A full-stack HR ERP featuring access control, HR analytics, and AI-assisted job offer content generation.",
+    features: ["Role-based access control with JWT and OAuth2 authentication.", "AI-powered job offer prediction using the OpenAI API and LinkedIn post publishing.", "KPI dashboard, JUnit/Mockito and Cypress tests, SonarQube analysis, and Docker/GitLab CI/CD pipeline with Trivy."],
+    tags: ["Spring Boot", "Angular", "MongoDB", "OpenAI API", "Docker", "GitLab CI/CD"], icon: "users",
   },
 ];
 
 export type SkillGroup = { title: string; items: [string, string][] };
-
-// [nom affiché, chemin devicon]
 export const skillGroups: SkillGroup[] = [
-  {
-    title: "Front-end",
-    items: [
-      ["JavaScript", "javascript/javascript-original.svg"],
-      ["TypeScript", "typescript/typescript-original.svg"],
-      ["React", "react/react-original.svg"],
-      ["React Native", "react/react-original.svg"],
-      ["Next.js", "nextjs/nextjs-original.svg"],
-      ["Angular", "angular/angular-original.svg"],
-      ["Redux", "redux/redux-original.svg"],
-      [".NET", "dotnetcore/dotnetcore-original.svg"],
-      ["jQuery", "jquery/jquery-original.svg"],
-      ["HTML", "html5/html5-original.svg"],
-      ["CSS", "css3/css3-original.svg"],
-      ["Bootstrap", "bootstrap/bootstrap-original.svg"],
-    ],
-  },
-  {
-    title: "Back-end",
-    items: [
-      ["Node.js", "nodejs/nodejs-original.svg"],
-      ["Express.js", "express/express-original.svg"],
-      ["Java", "java/java-original.svg"],
-      ["Spring Boot", "spring/spring-original.svg"],
-      ["MySQL", "mysql/mysql-original.svg"],
-      ["Sequelize", "sequelize/sequelize-original.svg"],
-      ["MongoDB", "mongodb/mongodb-original.svg"],
-      ["Mongoose", "mongoose/mongoose-original.svg"],
-      ["Firebase", "firebase/firebase-original.svg"],
-    ],
-  },
+  { title: "Languages & Front-end", items: [
+    ["TypeScript", "typescript/typescript-original.svg"], ["JavaScript", "javascript/javascript-original.svg"], ["Python", "python/python-original.svg"], ["PHP", "php/php-original.svg"], ["React", "react/react-original.svg"], ["Redux", "redux/redux-original.svg"], ["Next.js", "nextjs/nextjs-original.svg"], ["Angular", "angular/angular-original.svg"], ["React Native", "react/react-original.svg"], ["Django", "django/django-plain.svg"], [".NET", "dotnetcore/dotnetcore-original.svg"], ["Flutter", "flutter/flutter-original.svg"], ["HTML5", "html5/html5-original.svg"], ["CSS3", "css3/css3-original.svg"], ["Bootstrap", "bootstrap/bootstrap-original.svg"],
+  ] },
+  { title: "Back-end, Data & Tools", items: [
+    ["Node.js", "nodejs/nodejs-original.svg"], ["Express", "express/express-original.svg"], ["Spring Boot", "spring/spring-original.svg"], ["ASP.NET Core", "dotnetcore/dotnetcore-original.svg"], ["FastAPI", "fastapi/fastapi-original.svg"], ["PostgreSQL", "postgresql/postgresql-original.svg"], ["MySQL", "mysql/mysql-original.svg"], ["MongoDB", "mongodb/mongodb-original.svg"], ["Firebase", "firebase/firebase-original.svg"], ["Docker", "docker/docker-original.svg"], ["GitHub Actions", "githubactions/githubactions-original.svg"], ["Git", "git/git-original.svg"],
+  ] },
 ];
 
-export const dataScience = [
-  "Machine Learning",
-  "Analyse exploratoire des données",
-  "Prétraitement des données",
-  "Sélection de variables",
-];
+export const dataScience = ["Machine Learning", "NLP", "LLMs", "RAG", "Generative AI", "scikit-learn", "PyTorch", "WebRTC", "Microservices", "REST APIs", "WebSockets", "JWT", "OAuth2", "2FA", "CSRF", "Swagger / OpenAPI", "Postman", "Jira"];
 
 export const experiences = [
-  {
-    date: "2025 — Présent",
-    role: "E-Learning App",
-    company: "UDG Group",
-    points: [
-      "Développement d’une application e-learning full-stack (React, Redux, Node.js) avec authentification JWT par rôles (instructeur / étudiant / admin).",
-      "Intégration de notifications temps réel avec Socket.io et gestion des médias avec Cloudinary.",
-      "Création d’un tableau de bord admin pour la gestion des utilisateurs et des cours, et optimisation des interfaces.",
-    ],
-  },
-  {
-    date: "2024 — Présent",
-    role: "Security360 App",
-    company: "COFICAB",
-    points: [
-      "Authentification sécurisée et opérations CRUD complètes avec Spring Boot & Angular.",
-      "Tableaux de bord avec Chart.js et optimisation des performances SQL.",
-      "Gestion des merges de code et documentation technique en méthodologie Agile.",
-    ],
-  },
+  { date: "June 2026 — Present", role: "SCRIBE — Causal Explainability for Multi-Agent LLMs", company: "LARIA Research Laboratory · Master's thesis project", points: ["Built a causal explainable AI framework (Python, Groq API, Llama 3) to interpret collective decisions made by multi-agent LLMs.", "Implemented counterfactual simulations and dynamic causal influence graphs between agents.", "Evaluated the framework on medical CDSS and negotiation tasks, outperforming text-based baselines in causal completeness."] },
+  { date: "June 2026 — Present", role: "HR Training — AI-Enhanced E-Learning Platform", company: "3LM Solutions · Full-Stack Development Project", points: ["Architected and containerized an e-learning platform with Next.js, Node.js, PostgreSQL, WebRTC, and Docker CI/CD pipelines.", "Integrated Whisper transcription for WebRTC streams and a RAG copilot for live Q&A and automated summaries.", "Built course and quiz generation with Llama 3 (Groq, JSON mode) and an admin dashboard secured with NextAuth RBAC."] },
+  { date: "June 2025 — Present", role: "E-Learning App", company: "UDG Group · Full-Stack & AI Engineering", points: ["Developed a React, Redux, and Node.js application with role-based JWT authentication for students, instructors, and administrators.", "Integrated real-time notifications with Socket.IO and media management with Cloudinary.", "Built an administration dashboard for users and courses and improved usability."] },
+  { date: "January 2024 — Present", role: "Security360 Application", company: "COFICAB · Software Development Project", points: ["Implemented secure authentication and full CRUD operations with Spring Boot and Angular.", "Developed Chart.js dashboards and optimized SQL performance.", "Managed code merges and technical documentation using Agile methods."] },
 ];
 
 export const education = [
-  { school: "TEK UP University", degree: "Cycle ingénieur en Génie Logiciel (4e année)", period: "2025 — 2027" },
-  { school: "École Nationale des Sciences de l’Informatique (ENSI)", degree: "Master en Systèmes Intelligents Avancés", period: "2024 — 2026" },
-  { school: "Institut Supérieur des Sciences Appliquées et de Technologie de Mateur", degree: "Licence en Informatique", period: "2021 — 2024" },
-  { school: "Lycée Hassan Hosny Abdelwaheb", degree: "Baccalauréat en Sciences Expérimentales", period: "2017 — 2021" },
+  { school: "TEK-UP University", degree: "Engineering Degree in Software Engineering", period: "2025 — 2027" },
+  { school: "National School of Computer Science (ENSI)", degree: "Master's Degree in Advanced Intelligent Systems", period: "2024 — 2026" },
+  { school: "Higher Institute of Applied Science and Technology of Mateur", degree: "Bachelor's Degree in Computer Science — Software Engineering and Information Systems", period: "2021 — 2024" },
+  { school: "Hassan Hosny Abdelwaheb High School", degree: "Baccalaureate in Experimental Sciences", period: "2017 — 2021" },
 ];
 
-export const languages = ["Français", "Anglais", "Allemand"];
+export const certifications = ["Full-Stack JavaScript Development — RBK", "Large Language Models (LLMs) Concepts — DataCamp"];
+export const strengths = ["Problem-solving", "Adaptability", "Fast learning", "Autonomy", "Team collaboration", "Attention to detail", "Initiative"];
+export const languages = ["Arabic · Native", "French · Bilingual / Full professional proficiency", "English · Working proficiency", "German · Basic"];
