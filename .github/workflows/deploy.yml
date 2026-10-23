@@ -28,9 +28,8 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          # User sites (for example rezsirine.github.io) are hosted at the domain root.
-          # Project sites are hosted under /<repository>/.
-          FIGMA_PUBLIC_URL: ${{ github.event.repository.name == format('{0}.github.io', github.repository_owner) && '/' || format('/{0}', github.event.repository.name) }}
+          # This repository is the owner's GitHub Pages site and is hosted at the domain root.
+          FIGMA_PUBLIC_URL: /
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
