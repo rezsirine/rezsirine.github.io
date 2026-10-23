@@ -1,5 +1,12 @@
 import { FormEvent, ReactNode, useEffect, useState } from "react";
-import { profile, projects, skillGroups, dataScience, experiences, education, languages, certifications, strengths } from "./data";
+import { profile, projects, skillGroups, dataScience, experiences, education, languages, certifications, strengths, type Project } from "./data";
+import { projectDetails } from "./projectDetails";
+
+type FormStatus = "idle" | "sending" | "success" | "error";
+
+function readProjectSlug(hash: string) {
+  return hash.match(/^#project\/([^/?#]+)/)?.[1] ?? null;
+}
 
 type IconName =
   | "arrow"
@@ -58,10 +65,164 @@ function SectionTitle({ eyebrow, title, text }: { eyebrow: string; title: string
   );
 }
 
+function SkillLogo({ name, iconPath }: { name: string; iconPath: string }) {
+  return (
+    <span className="skill-logo-wrap">
+      <img
+        className="skill-logo"
+        src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${iconPath}`}
+        alt=""
+        loading="lazy"
+        onLoad={(event) => { const fallback = event.currentTarget.nextElementSibling as HTMLElement | null; if (fallback) fallback.hidden = true; }}
+        onError={(event) => { event.currentTarget.hidden = true; const fallback = event.currentTarget.nextElementSibling as HTMLElement | null; if (fallback) fallback.hidden = false; }}
+      />
+      <span className="skill-logo-fallback" hidden aria-hidden="true">{name.replace(/[^a-zA-Z0-9]/g, "").slice(0, 2).toUpperCase()}</span>
+    </span>
+  );
+}
+
+function ContactForm({ status, onSubmit }: { status: FormStatus; onSubmit: (event: FormEvent<HTMLFormElement>) => void | Promise<void> }) {
+  return (
+    <form className="contact-form" onSubmit={onSubmit}>
+      <input type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" className="form-honeypot" />
+      <div className="field-row">
+        <label>Your name<input required name="name" placeholder="Your name" /></label>
+        <label>Your email<input required name="email" type="email" placeholder="you@company.com" /></label>
+      </div>
+      <label>Subject<input required name="subject" placeholder="Message subject" /></label>
+      <label>Your message<textarea required name="message" rows={5} placeholder="Hi Sirine, ..." /></label>
+      <button className="button primary submit-button" type="submit" disabled={status === "sending"}>
+        {status === "sending" ? "Sending..." : "Send private message"} <Icon name="send" />
+      </button>
+    </form>
+  );
+}
+
+function ProjectDetail({ project, status, onSubmit }: { project: Project; status: FormStatus; onSubmit: (event: FormEvent<HTMLFormElement>) => void | Promise<void> }) {
+  const [copied, setCopied] = useState(false);
+  const details = projectDetails[project.slug];
+
+  async function copyProjectLink() {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      setCopied(false);
+    }
+  }
+
+  return (
+    <article className="project-detail section is-visible">
+      <a className="case-back" href="#projets"><Icon name="arrow" size={16} /> Back to selected projects</a>
+      <header className="case-heading">
+        <div>
+          <span className="eyebrow"><span>//</span> {project.category} · {project.org}</span>
+          <h1>{project.title}</h1>
+          <p>{project.description}</p>
+          <div className="case-meta"><span>{project.period}</span><i /> <span>{project.org}</span><button className="copy-link" type="button" onClick={copyProjectLink}>{copied ? "Link copied" : "Copy link"}</button></div>
+        </div>
+        {(project.views !== undefined || project.likes !== undefined) && (
+          <div className="case-stats">
+            {project.views !== undefined && <span><strong>{project.views}</strong><small>views</small></span>}
+            {project.likes !== undefined && <span><strong>{project.likes}</strong><small>likes</small></span>}
+          </div>
+        )}
+      </header>
+
+      <div className={`case-cover case-cover-${project.slug}`}>
+        <div className="case-cover-grid" />
+        {project.cover && <img src={project.cover} alt={`${project.title} project cover`} />}
+        <span className="case-cover-label">{project.category}</span>
+        <div className="case-cover-mark"><Icon name={project.icon} size={60} /></div>
+        <strong>{project.title}</strong>
+        <small>{project.tags.slice(0, 4).join(" · ")}</small>
+        <span className="case-cover-index">{project.index}</span>
+      </div>
+
+      {details?.objective || details?.impact ? (
+        <div className="case-summary-grid">
+          {details.objective && <section className="case-summary-card"><span className="eyebrow"><span>01</span> Objective</span><p>{details.objective}</p></section>}
+          {details.impact && <section className="case-summary-card"><span className="eyebrow"><span>02</span> Impact</span><p>{details.impact}</p></section>}
+        </div>
+      ) : (
+        <section className="case-block"><span className="eyebrow"><span>//</span> Project overview</span><p>{project.description}</p></section>
+      )}
+
+      <section className="case-block case-stack-block">
+        <div><span className="eyebrow"><span>//</span> Stack</span><h2>Technology behind the project.</h2></div>
+        <div className="tags case-stack">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+        {details?.tags && <div className="tags case-hashtags">{details.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div>}
+      </section>
+
+      {details?.metrics && (
+        <section className="case-block case-metrics-block">
+          <span className="eyebrow"><span>//</span> By the numbers</span>
+          <div className="case-metrics">
+            {details.metrics.map((metric) => <div key={metric.label}><strong>{metric.value}</strong><span>{metric.label}</span>{metric.note && <small>{metric.note}</small>}</div>)}
+          </div>
+          {details.codeStats && <div className="code-stats">{details.codeStats.map((item) => <span key={item.language}><b>{item.language}</b><i><em style={{ width: `${(Number(item.lines.replace(",", "")) / 74700) * 100}%` }} /></i><small>{item.lines} lines</small></span>)}</div>}
+        </section>
+      )}
+
+      {details?.challenge && <section className="case-block case-challenge"><span className="eyebrow"><span>//</span> Case study · The challenge</span><h2>Bringing diabetes care into one connected experience.</h2><p>{details.challenge}</p></section>}
+
+      {details?.architecture && (
+        <section className="case-block">
+          <span className="eyebrow"><span>//</span> Architecture</span>
+          <div className="architecture-grid">{details.architecture.map((layer, index) => <article key={layer.title}><span className="architecture-index">0{index + 1}</span><h3>{layer.title}</h3><ul>{layer.items.map((item) => <li key={item}>{item}</li>)}</ul></article>)}</div>
+        </section>
+      )}
+
+      {details?.decisions && (
+        <section className="case-block">
+          <span className="eyebrow"><span>//</span> Engineering decisions</span>
+          <div className="decision-list">{details.decisions.map((decision, index) => <article key={decision.title}><span>0{index + 1}</span><div><h3>{decision.title}</h3><p>{decision.description}</p></div></article>)}</div>
+        </section>
+      )}
+
+      <section className="case-block case-features-block">
+        <span className="eyebrow"><span>//</span> Features</span>
+        <div className="case-features">{(details?.features ?? project.features).map((feature, index) => <article key={feature}><span>0{index + 1}</span><p>{feature}</p></article>)}</div>
+      </section>
+
+      <section id="project-contact" className="project-message">
+        <div className="project-message-copy">
+          <span className="eyebrow"><span>//</span> A note about this project</span>
+          <h2>Have a question or an idea?</h2>
+          <p>Your message is private and goes directly to my inbox. It will never be displayed on this website.</p>
+          <a className="email-link" href={`mailto:${profile.email}`}><Icon name="mail" /> {profile.email}</a>
+        </div>
+        <ContactForm status={status} onSubmit={onSubmit} />
+      </section>
+    </article>
+  );
+}
+
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">(() => (localStorage.getItem("sirine-theme") as "dark" | "light") || "dark");
-  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [formStatus, setFormStatus] = useState<FormStatus>("idle");
+  const [activeProjectSlug, setActiveProjectSlug] = useState<string | null>(() => readProjectSlug(window.location.hash));
+  const activeProject = projects.find((project) => project.slug === activeProjectSlug);
+
+  useEffect(() => {
+    const syncProjectRoute = () => {
+      const slug = readProjectSlug(window.location.hash);
+      setActiveProjectSlug(slug);
+      setMenuOpen(false);
+      if (slug) window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    window.addEventListener("hashchange", syncProjectRoute);
+    return () => window.removeEventListener("hashchange", syncProjectRoute);
+  }, []);
+
+  useEffect(() => {
+    const anchorId = window.location.hash.slice(1);
+    if (!activeProjectSlug && anchorId) {
+      requestAnimationFrame(() => document.getElementById(anchorId)?.scrollIntoView({ behavior: "smooth" }));
+    }
+  }, [activeProjectSlug]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -129,17 +290,18 @@ export default function App() {
         </div>
       )}
       <header className="topbar">
-        <a className="brand" href="#accueil" aria-label="Home">
+        <a className="brand" href={activeProject ? "#projets" : "#accueil"} aria-label="Home">
           <span className="brand-mark">&lt;SR/&gt;</span>
           <span>Sirine<span className="muted">.dev</span></span>
         </a>
-        <nav className={menuOpen ? "nav-links open" : "nav-links"} aria-label="Main navigation">
+        <nav className={`${menuOpen ? "nav-links open" : "nav-links"}${activeProject ? " project-nav" : ""}`} aria-label="Main navigation">
+          {activeProject && <a className="project-nav-back" href="#projets" onClick={() => setMenuOpen(false)}><Icon name="arrow" size={14} /> All projects</a>}
           {[["About", "apropos"], ["Experience", "parcours"], ["Projects", "projets"], ["Skills", "competences"]].map(([label, id], index) => (
             <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
               <span>0{index + 1}.</span>{label}
             </a>
           ))}
-          <a className="nav-cta" href="#contact" onClick={() => setMenuOpen(false)}>Contact me <Icon name="arrow" /></a>
+          <a className="nav-cta" href={activeProject ? "#project-contact" : "#contact"} onClick={() => setMenuOpen(false)}>{activeProject ? "Discuss this project" : "Contact me"} <Icon name="arrow" /></a>
         </nav>
         <button className="theme-toggle" type="button" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`} title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}>
           <span aria-hidden="true">{theme === "dark" ? "☼" : "☾"}</span><small>{theme === "dark" ? "Light" : "Dark"}</small>
@@ -150,6 +312,7 @@ export default function App() {
       </header>
 
       <main>
+        {activeProject ? <ProjectDetail project={activeProject} status={formStatus} onSubmit={submitForm} /> : <>
         <section id="accueil" className="hero">
           <div className="hero-copy">
             <div className="availability"><i /> Seeking a Final-Year Internship</div>
@@ -236,10 +399,10 @@ export default function App() {
             <div className="skill-group" key={group.title}>
               <h3 className="skill-group-title">{group.title}</h3>
               <div className="skills-grid">
-                {group.items.map(([name], index) => (
+                {group.items.map(([name, iconPath], index) => (
                   <div className="skill-card" key={name}>
                     <span className="skill-index">{String(index + 1).padStart(2, "0")}</span>
-                    <span className="skill-monogram" aria-hidden="true">{name.replace(/[^a-zA-Z0-9]/g, "").slice(0, 2).toUpperCase()}</span>
+                    <SkillLogo name={name} iconPath={iconPath} />
                     <strong>{name}</strong>
                     <span className="skill-line" />
                   </div>
@@ -272,12 +435,11 @@ export default function App() {
                     {project.features.map((feature) => <li key={feature}>{feature}</li>)}
                   </ul>
                   <div className="tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-                  {(project.github || project.demo) && (
-                    <div className="project-links">
-                      {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer"><Icon name="github" /> View on GitHub</a>}
-                      {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer"><Icon name="external" /> Live demo</a>}
-                    </div>
-                  )}
+                  <div className="project-links">
+                    <a className="case-study-link" href={`#project/${project.slug}`}>View case study <Icon name="arrow" /></a>
+                    {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer"><Icon name="github" /> View on GitHub</a>}
+                    {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer"><Icon name="external" /> Live demo</a>}
+                  </div>
                 </div>
               </article>
             ))}
@@ -336,20 +498,10 @@ export default function App() {
                 {profile.github && <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Icon name="github" /></a>}
               </div>
             </div>
-            <form className="contact-form" onSubmit={submitForm}>
-              <input type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" className="form-honeypot" />
-              <div className="field-row">
-                <label>Your name<input required name="name" placeholder="Your name" /></label>
-                <label>Your email<input required name="email" type="email" placeholder="you@company.com" /></label>
-              </div>
-              <label>Subject<input required name="subject" placeholder="Message subject" /></label>
-              <label>Your message<textarea required name="message" rows={5} placeholder="Hi Sirine, ..." /></label>
-              <button className="button primary submit-button" type="submit" disabled={formStatus === "sending"}>
-                {formStatus === "sending" ? "Sending..." : "Send message"} <Icon name="send" />
-              </button>
-            </form>
+            <ContactForm status={formStatus} onSubmit={submitForm} />
           </div>
         </section>
+        </>}
       </main>
 
       <footer>

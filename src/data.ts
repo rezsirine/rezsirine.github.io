@@ -16,32 +16,41 @@ export const profile = {
 };
 
 export type Project = {
-  index: string; category: string; title: string; org: string; period: string;
+  slug: string; index: string; category: string; title: string; org: string; period: string;
   description: string; features: string[]; tags: string[];
+  cover?: string; views?: number; likes?: number;
   icon: "brain" | "heart" | "users"; github?: string; demo?: string;
 };
 
 export const projects: Project[] = [
   {
-    index: "01", category: "Industry · Predictive Maintenance", title: "SmartFactory Twin",
+    slug: "smartfactory-twin", index: "01", category: "Industry · Predictive Maintenance", title: "SmartFactory Twin",
     org: "TEK-UP University", period: "March — May 2026",
     description: "An industrial digital twin for real-time equipment monitoring and failure prediction from IoT time-series data.",
     features: ["Real-time dashboard, multi-level alerts, and automated PDF maintenance reports.", "LSTM Autoencoder and GRU models for anomaly detection and failure classification (AUC 0.90; failures detected up to 15 cycles in advance).", "YOLOv8 visual inspection, Vitest/Pytest quality tests, and Docker deployment with GitHub Actions CI/CD."],
     tags: ["React", "Django REST", "FastAPI", "PyTorch", "YOLOv8", "Docker"], icon: "brain",
   },
   {
-    index: "02", category: "Healthcare · Multi-Agent Systems", title: "Sympnet-CDSS",
+    slug: "sympnet-cdss", index: "02", category: "Healthcare · Multi-Agent Systems", title: "Sympnet-CDSS",
     org: "TEK-UP University", period: "March 2026",
     description: "A telemedicine and clinical decision-support platform built on a microservices architecture with a multi-agent AI copilot.",
     features: [".NET 8 and Blazor application with role-based JWT authentication for doctors and patients.", "Real-time SignalR notifications, Whisper transcription, and prescription validation against PubMed guidance.", "AI diagnostic copilot (FastAPI, Llama 3, pgvector RAG) and clinical dashboard."],
     tags: ["ASP.NET Core", "Blazor", "FastAPI", "Llama 3", "RAG", "pgvector"], icon: "heart",
   },
   {
-    index: "03", category: "HR · ERP & Generative AI", title: "ERP_RH",
+    slug: "erp-rh", index: "03", category: "HR · ERP & Generative AI", title: "ERP_RH",
     org: "TEK-UP University", period: "October 2026",
     description: "A full-stack HR ERP featuring access control, HR analytics, and AI-assisted job offer content generation.",
     features: ["Role-based access control with JWT and OAuth2 authentication.", "AI-powered job offer prediction using the OpenAI API and LinkedIn post publishing.", "KPI dashboard, JUnit/Mockito and Cypress tests, SonarQube analysis, and Docker/GitLab CI/CD pipeline with Trivy."],
     tags: ["Spring Boot", "Angular", "MongoDB", "OpenAI API", "Docker", "GitLab CI/CD"], icon: "users",
+  },
+  {
+    slug: "diabcare", index: "04", category: "Healthcare · Mobile & AI", title: "DiabCare",
+    org: "ESPRIT", period: "January — May 2026",
+    description: "A digital health platform connecting people with diabetes, doctors, and pharmacists through a Flutter app, a NestJS API, and a React back office. It combines Bluetooth glucose monitoring, nearby pharmacy search, and five AI services.",
+    features: ["Daily glucose tracking with manual or Bluetooth Low Energy meter readings.", "AI-assisted meal analysis, glucose prediction, pattern detection, and clinical support.", "Geolocated medicine requests sent to nearby pharmacies, with click-and-collect order tracking."],
+    tags: ["Flutter", "NestJS", "MongoDB", "React", "Gemini", "Ollama", "Firebase", "RevenueCat", "Bluetooth LE", "Google Maps", "Swagger"],
+    views: 11, likes: 1, icon: "heart",
   },
 ];
 
