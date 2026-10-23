@@ -1,5 +1,5 @@
 import { FormEvent, ReactNode, useEffect, useState } from "react";
-import { profile, projects, skillGroups, dataScience, experiences, education, languages, certifications, strengths, type Project } from "./data";
+import { profile, projects, experienceProjects, skillGroups, dataScience, education, languages, certifications, strengths, type Project } from "./data";
 import { projectDetails } from "./projectDetails";
 
 type FormStatus = "idle" | "sending" | "success" | "error";
@@ -76,7 +76,7 @@ function SkillLogo({ name, iconPath }: { name: string; iconPath: string }) {
         onLoad={(event) => { const fallback = event.currentTarget.nextElementSibling as HTMLElement | null; if (fallback) fallback.hidden = true; }}
         onError={(event) => { event.currentTarget.hidden = true; const fallback = event.currentTarget.nextElementSibling as HTMLElement | null; if (fallback) fallback.hidden = false; }}
       />
-      <span className="skill-logo-fallback" hidden aria-hidden="true">{name.replace(/[^a-zA-Z0-9]/g, "").slice(0, 2).toUpperCase()}</span>
+      <span className="skill-logo-fallback" aria-hidden="true">{name.replace(/[^a-zA-Z0-9]/g, "").slice(0, 2).toUpperCase()}</span>
     </span>
   );
 }
@@ -98,7 +98,7 @@ function ContactForm({ status, onSubmit }: { status: FormStatus; onSubmit: (even
   );
 }
 
-function ProjectDetail({ project, status, onSubmit }: { project: Project; status: FormStatus; onSubmit: (event: FormEvent<HTMLFormElement>) => void | Promise<void> }) {
+function ProjectDetail({ project, status, onSubmit, isExperience = false }: { project: Project; status: FormStatus; onSubmit: (event: FormEvent<HTMLFormElement>) => void | Promise<void>; isExperience?: boolean }) {
   const [copied, setCopied] = useState(false);
   const details = projectDetails[project.slug];
 
@@ -114,7 +114,7 @@ function ProjectDetail({ project, status, onSubmit }: { project: Project; status
 
   return (
     <article className="project-detail section is-visible">
-      <a className="case-back" href="#projets"><Icon name="arrow" size={16} /> Back to selected projects</a>
+      <a className="case-back" href={isExperience ? "#experience" : "#projets"}><Icon name="arrow" size={16} /> {isExperience ? "Back to experience" : "Back to academic projects"}</a>
       <header className="case-heading">
         <div>
           <span className="eyebrow"><span>//</span> {project.category} · {project.org}</span>
@@ -132,7 +132,6 @@ function ProjectDetail({ project, status, onSubmit }: { project: Project; status
 
       <div className={`case-cover case-cover-${project.slug}`}>
         <div className="case-cover-grid" />
-        {project.cover && <img src={project.cover} alt={`${project.title} project cover`} />}
         <span className="case-cover-label">{project.category}</span>
         <div className="case-cover-mark"><Icon name={project.icon} size={60} /></div>
         <strong>{project.title}</strong>
@@ -165,7 +164,7 @@ function ProjectDetail({ project, status, onSubmit }: { project: Project; status
         </section>
       )}
 
-      {details?.challenge && <section className="case-block case-challenge"><span className="eyebrow"><span>//</span> Case study · The challenge</span><h2>Bringing diabetes care into one connected experience.</h2><p>{details.challenge}</p></section>}
+      {details?.challenge && <section className="case-block case-challenge"><span className="eyebrow"><span>//</span> Case study · The challenge</span><h2>{project.title}: the challenge.</h2><p>{details.challenge}</p></section>}
 
       {details?.architecture && (
         <section className="case-block">
@@ -199,12 +198,70 @@ function ProjectDetail({ project, status, onSubmit }: { project: Project; status
   );
 }
 
+function ProjectCard({ project, experience = false }: { project: Project; experience?: boolean }) {
+  return (
+    <article className="project-card">
+      <div className="project-image project-visual">
+        <div className="visual-grid" />
+        <span className="visual-icon"><Icon name={project.icon} size={54} /></span>
+        <span className="project-number">{project.index}</span>
+        <span className="project-period">{project.period}</span>
+      </div>
+      <div className="project-info">
+        <span className="project-category">{project.category} · {project.org}</span>
+        <h3>{project.title}</h3>
+        <p>{project.description}</p>
+        <ul className="feature-list">{project.features.map((feature) => <li key={feature}>{feature}</li>)}</ul>
+        <div className="tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+        <div className="project-links">
+          <a className="case-study-link" href={`#project/${project.slug}`}>{experience ? "View experience" : "View case study"} <Icon name="arrow" /></a>
+          {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer"><Icon name="github" /> View on GitHub</a>}
+          {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer"><Icon name="external" /> Live demo</a>}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function ExperienceTimeline() {
+  return (
+    <section id="experience" className="section journey-section">
+      <SectionTitle eyebrow="Professional Experience" title="Internships &amp; research." text="Choose an entry to open its detailed case study." />
+      <div className="timeline">
+        {experienceProjects.map((item) => (
+          <article className="timeline-item" key={item.slug}>
+            <div className="timeline-marker"><span>{item.index}</span></div>
+            <div>
+              <time>{item.period}</time>
+              <h3>{item.title}</h3>
+              <h4>{item.category} · {item.org}</h4>
+              <p className="experience-summary">{item.description}</p>
+              <a className="case-study-link" href={`#project/${item.slug}`}>View experience details <Icon name="arrow" /></a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ExperienceCards() {
+  return (
+    <section id="experience" className="section projects-section experience-cards-section">
+      <SectionTitle eyebrow="Professional Experience" title="Internships &amp; research." text="Open a card to explore the work and technical decisions behind each experience." />
+      <div className="projects-list">{experienceProjects.map((project) => <ProjectCard key={project.slug} project={project} experience />)}</div>
+    </section>
+  );
+}
+
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">(() => (localStorage.getItem("sirine-theme") as "dark" | "light") || "dark");
   const [formStatus, setFormStatus] = useState<FormStatus>("idle");
+  const [experienceMode, setExperienceMode] = useState<"cards" | "list">("cards");
   const [activeProjectSlug, setActiveProjectSlug] = useState<string | null>(() => readProjectSlug(window.location.hash));
-  const activeProject = projects.find((project) => project.slug === activeProjectSlug);
+  const activeProject = [...projects, ...experienceProjects].find((project) => project.slug === activeProjectSlug);
+  const activeProjectIsExperience = experienceProjects.some((project) => project.slug === activeProjectSlug);
 
   useEffect(() => {
     const syncProjectRoute = () => {
@@ -222,7 +279,7 @@ export default function App() {
     if (!activeProjectSlug && anchorId) {
       requestAnimationFrame(() => document.getElementById(anchorId)?.scrollIntoView({ behavior: "smooth" }));
     }
-  }, [activeProjectSlug]);
+  }, [activeProjectSlug, experienceMode]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -244,7 +301,7 @@ export default function App() {
     }), { threshold: 0.12 });
     document.querySelectorAll(".section, .project-card, .timeline-item").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [activeProjectSlug]);
 
   async function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -290,13 +347,13 @@ export default function App() {
         </div>
       )}
       <header className="topbar">
-        <a className="brand" href={activeProject ? "#projets" : "#accueil"} aria-label="Home">
+        <a className="brand" href={activeProject ? (activeProjectIsExperience ? "#experience" : "#projets") : "#accueil"} aria-label="Home">
           <span className="brand-mark">&lt;SR/&gt;</span>
           <span>Sirine<span className="muted">.dev</span></span>
         </a>
         <nav className={`${menuOpen ? "nav-links open" : "nav-links"}${activeProject ? " project-nav" : ""}`} aria-label="Main navigation">
-          {activeProject && <a className="project-nav-back" href="#projets" onClick={() => setMenuOpen(false)}><Icon name="arrow" size={14} /> All projects</a>}
-          {[["About", "apropos"], ["Experience", "parcours"], ["Projects", "projets"], ["Skills", "competences"]].map(([label, id], index) => (
+          {activeProject && <a className="project-nav-back" href={activeProjectIsExperience ? "#experience" : "#projets"} onClick={() => setMenuOpen(false)}><Icon name="arrow" size={14} /> {activeProjectIsExperience ? "Experience" : "Academic projects"}</a>}
+          {[["About", "apropos"], ["Experience", "experience"], ["Projects", "projets"], ["Skills", "competences"]].map(([label, id], index) => (
             <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
               <span>0{index + 1}.</span>{label}
             </a>
@@ -312,7 +369,7 @@ export default function App() {
       </header>
 
       <main>
-        {activeProject ? <ProjectDetail project={activeProject} status={formStatus} onSubmit={submitForm} /> : <>
+        {activeProject ? <ProjectDetail project={activeProject} status={formStatus} onSubmit={submitForm} isExperience={activeProjectIsExperience} /> : <>
         <section id="accueil" className="hero">
           <div className="hero-copy">
             <div className="availability"><i /> Seeking a Final-Year Internship</div>
@@ -383,7 +440,7 @@ export default function App() {
             </div>
             <div className="about-copy">
               <p>{profile.summary}</p>
-              <a className="text-link" href="#parcours">Explore my journey <Icon name="arrow" /></a>
+              <a className="text-link" href="#experience">Explore my experience <Icon name="arrow" /></a>
             </div>
             <div className="principles">
               <div><span>01</span><strong>Full-stack development</strong><small>React, Next.js, Node.js, Python.</small></div>
@@ -392,6 +449,18 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        <section className="section experience-view-selector" aria-label="Choose how to view professional experience">
+          <div>
+            <span className="eyebrow"><span>//</span> Professional Experience</span>
+            <h2>Explore my experience.</h2>
+          </div>
+          <div className="experience-view-options" role="group" aria-label="Experience display mode">
+            <button type="button" className={experienceMode === "cards" ? "active" : ""} aria-pressed={experienceMode === "cards"} onClick={() => setExperienceMode("cards")}>Cards · details</button>
+            <button type="button" className={experienceMode === "list" ? "active" : ""} aria-pressed={experienceMode === "list"} onClick={() => setExperienceMode("list")}>List · after projects</button>
+          </div>
+        </section>
+        {experienceMode === "cards" && <ExperienceCards />}
 
         <section id="competences" className="section skills-section">
           <SectionTitle eyebrow="Skills" title="My toolkit." text="Technologies I use across projects and team environments." />
@@ -417,69 +486,27 @@ export default function App() {
         </section>
 
         <section id="projets" className="section projects-section">
-          <SectionTitle eyebrow="Projects" title="Building at the intersection of AI and software." text="Selected work across explainable AI, healthcare, and predictive maintenance." />
-          <div className="projects-list">
-            {projects.map((project) => (
-              <article className="project-card" key={project.title}>
-                <div className="project-image project-visual">
-                  <div className="visual-grid" />
-                  <span className="visual-icon"><Icon name={project.icon} size={54} /></span>
-                  <span className="project-number">{project.index}</span>
-                  <span className="project-period">{project.period}</span>
-                </div>
-                <div className="project-info">
-                  <span className="project-category">{project.category} · {project.org}</span>
-                  <h3>{project.title}</h3>
-                  <p>{project.description}</p>
-                  <ul className="feature-list">
-                    {project.features.map((feature) => <li key={feature}>{feature}</li>)}
-                  </ul>
-                  <div className="tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-                  <div className="project-links">
-                    <a className="case-study-link" href={`#project/${project.slug}`}>View case study <Icon name="arrow" /></a>
-                    {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer"><Icon name="github" /> View on GitHub</a>}
-                    {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer"><Icon name="external" /> Live demo</a>}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+          <SectionTitle eyebrow="Academic Projects" title="Selected academic work." text="Projects built in an academic setting across healthcare, HR, and predictive maintenance." />
+          <div className="projects-list">{projects.map((project) => <ProjectCard key={project.slug} project={project} />)}</div>
         </section>
 
-        <section id="parcours" className="section journey-section">
-          <SectionTitle eyebrow="Experience" title="Experience &amp; education." />
-          <div className="journey-layout">
-            <div className="journey-aside">
+        {experienceMode === "list" && <ExperienceTimeline />}
+
+        <section id="education" className="section journey-section education-section">
+          <SectionTitle eyebrow="Education" title="Education &amp; credentials." />
+          <div className="education-grid">
+            <div className="education-panel">
               <h3 className="skill-group-title">Education</h3>
-              <div className="education-list">
-                {education.map((item) => (
-                  <div key={item.degree}>
-                    <time>{item.period}</time>
-                    <strong>{item.school}</strong>
-                    <small>{item.degree}</small>
-                  </div>
-                ))}
-              </div>
+              <div className="education-list">{education.map((item) => <div key={item.degree}><time>{item.period}</time><strong>{item.school}</strong><small>{item.degree}</small></div>)}</div>
+              <a className="button secondary" href={profile.cv} download>Download my CV <Icon name="download" /></a>
+            </div>
+            <div className="education-panel">
               <h3 className="skill-group-title">Languages</h3>
-              <div className="tags">{languages.map((l) => <span key={l}>{l}</span>)}</div>
+              <div className="tags">{languages.map((item) => <span key={item}>{item}</span>)}</div>
               <h3 className="skill-group-title credential-title">Certifications</h3>
               <div className="credential-list">{certifications.map((item) => <span key={item}>{item}</span>)}</div>
               <h3 className="skill-group-title credential-title">Core strengths</h3>
               <div className="tags">{strengths.map((item) => <span key={item}>{item}</span>)}</div>
-              <a className="button secondary" href={profile.cv} download style={{ marginTop: 26 }}>Download my CV <Icon name="download" /></a>
-            </div>
-            <div className="timeline">
-              {experiences.map((item, index) => (
-                <article className="timeline-item" key={item.role}>
-                  <div className="timeline-marker"><span>{String(index + 1).padStart(2, "0")}</span></div>
-                  <div>
-                    <time>{item.date}</time>
-                    <h3>{item.role}</h3>
-                    <h4>{item.company}</h4>
-                    <ul className="feature-list">{item.points.map((p) => <li key={p}>{p}</li>)}</ul>
-                  </div>
-                </article>
-              ))}
             </div>
           </div>
         </section>

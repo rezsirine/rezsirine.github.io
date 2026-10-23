@@ -18,7 +18,7 @@ export const profile = {
 export type Project = {
   slug: string; index: string; category: string; title: string; org: string; period: string;
   description: string; features: string[]; tags: string[];
-  cover?: string; views?: number; likes?: number;
+  views?: number; likes?: number;
   icon: "brain" | "heart" | "users"; github?: string; demo?: string;
 };
 
@@ -44,14 +44,6 @@ export const projects: Project[] = [
     features: ["Role-based access control with JWT and OAuth2 authentication.", "AI-powered job offer prediction using the OpenAI API and LinkedIn post publishing.", "KPI dashboard, JUnit/Mockito and Cypress tests, SonarQube analysis, and Docker/GitLab CI/CD pipeline with Trivy."],
     tags: ["Spring Boot", "Angular", "MongoDB", "OpenAI API", "Docker", "GitLab CI/CD"], icon: "users",
   },
-  {
-    slug: "diabcare", index: "04", category: "Healthcare · Mobile & AI", title: "DiabCare",
-    org: "ESPRIT", period: "January — May 2026",
-    description: "A digital health platform connecting people with diabetes, doctors, and pharmacists through a Flutter app, a NestJS API, and a React back office. It combines Bluetooth glucose monitoring, nearby pharmacy search, and five AI services.",
-    features: ["Daily glucose tracking with manual or Bluetooth Low Energy meter readings.", "AI-assisted meal analysis, glucose prediction, pattern detection, and clinical support.", "Geolocated medicine requests sent to nearby pharmacies, with click-and-collect order tracking."],
-    tags: ["Flutter", "NestJS", "MongoDB", "React", "Gemini", "Ollama", "Firebase", "RevenueCat", "Bluetooth LE", "Google Maps", "Swagger"],
-    views: 11, likes: 1, icon: "heart",
-  },
 ];
 
 export type SkillGroup = { title: string; items: [string, string][] };
@@ -66,11 +58,35 @@ export const skillGroups: SkillGroup[] = [
 
 export const dataScience = ["Machine Learning", "NLP", "LLMs", "RAG", "Generative AI", "scikit-learn", "PyTorch", "WebRTC", "Microservices", "REST APIs", "WebSockets", "JWT", "OAuth2", "2FA", "CSRF", "Swagger / OpenAPI", "Postman", "Jira"];
 
-export const experiences = [
-  { date: "June 2026 — Present", role: "SCRIBE — Causal Explainability for Multi-Agent LLMs", company: "LARIA Research Laboratory · Master's thesis project", points: ["Built a causal explainable AI framework (Python, Groq API, Llama 3) to interpret collective decisions made by multi-agent LLMs.", "Implemented counterfactual simulations and dynamic causal influence graphs between agents.", "Evaluated the framework on medical CDSS and negotiation tasks, outperforming text-based baselines in causal completeness."] },
-  { date: "June 2026 — Present", role: "HR Training — AI-Enhanced E-Learning Platform", company: "3LM Solutions · Full-Stack Development Project", points: ["Architected and containerized an e-learning platform with Next.js, Node.js, PostgreSQL, WebRTC, and Docker CI/CD pipelines.", "Integrated Whisper transcription for WebRTC streams and a RAG copilot for live Q&A and automated summaries.", "Built course and quiz generation with Llama 3 (Groq, JSON mode) and an admin dashboard secured with NextAuth RBAC."] },
-  { date: "June 2025 — Present", role: "E-Learning App", company: "UDG Group · Full-Stack & AI Engineering", points: ["Developed a React, Redux, and Node.js application with role-based JWT authentication for students, instructors, and administrators.", "Integrated real-time notifications with Socket.IO and media management with Cloudinary.", "Built an administration dashboard for users and courses and improved usability."] },
-  { date: "January 2024 — Present", role: "Security360 Application", company: "COFICAB · Software Development Project", points: ["Implemented secure authentication and full CRUD operations with Spring Boot and Angular.", "Developed Chart.js dashboards and optimized SQL performance.", "Managed code merges and technical documentation using Agile methods."] },
+export const experienceProjects: Project[] = [
+  {
+    slug: "scribe", index: "01", category: "Research Internship · Causal XAI", title: "SCRIBE",
+    org: "LARIA Research Laboratory", period: "June 2026 — Present",
+    description: "A causal explainability framework for understanding how multi-agent language models reach collective decisions.",
+    features: ["Counterfactual simulations to test how an agent's contribution changes a group decision.", "Dynamic causal influence graphs that trace interactions between agents.", "Benchmarks on medical decision-support and negotiation tasks against text-based baselines."],
+    tags: ["Python", "Groq API", "Llama 3", "Causal XAI", "LLM Agents"], icon: "brain",
+  },
+  {
+    slug: "hr-trainer", index: "02", category: "Full-Stack Internship · EdTech", title: "HR Training",
+    org: "3LM Solutions", period: "June 2026 — Present",
+    description: "An AI-enhanced e-learning platform that helps learners during live lessons and automates repetitive course preparation for instructors.",
+    features: ["Live WebRTC lecture transcription with Whisper and a retrieval-augmented learning copilot.", "AI-assisted syllabus and quiz generation using LLaMA models through Groq.", "NextAuth role-based access for learners, instructors, and administrators."],
+    tags: ["Next.js", "Express", "PostgreSQL", "Prisma", "Groq", "LLaMA 3", "Whisper", "WebRTC", "Docker"], icon: "brain",
+  },
+  {
+    slug: "e-learning-app", index: "03", category: "Full-Stack Internship · E-Learning", title: "E-Learning App",
+    org: "UDG Group", period: "June 2025 — Present",
+    description: "A learning platform for students, instructors, and administrators, combining course delivery, live classes, assessments, and real-time updates.",
+    features: ["Role-based authentication and administration tools for users and courses.", "Live virtual classrooms with Jitsi Meet and WebRTC, plus Socket.IO notifications.", "Timed quizzes, assignments, exams, and course media managed through Cloudinary."],
+    tags: ["React", "Redux Toolkit", "Node.js", "Express", "MongoDB", "Socket.IO", "Jitsi Meet", "WebRTC", "Cloudinary"], icon: "users",
+  },
+  {
+    slug: "security360", index: "04", category: "Software Development Internship · Enterprise", title: "Security360 Application",
+    org: "COFICAB", period: "January 2024 — Present",
+    description: "A secure business application with access-controlled workflows, record management, and operational dashboards.",
+    features: ["Secure authentication and CRUD workflows built with Spring Boot and Angular.", "Interactive KPI dashboards with Chart.js and SQL performance improvements.", "Agile collaboration through code reviews, merge management, and technical documentation."],
+    tags: ["Spring Boot", "Angular", "Chart.js", "SQL", "Agile"], icon: "users",
+  },
 ];
 
 export const education = [
