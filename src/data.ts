@@ -10,7 +10,7 @@ export const profile = {
   location: "Ariana, Tunisia",
   linkedinLabel: "LinkedIn",
   linkedin: "" as string,
-  github: "" as string,
+  github: "https://github.com/rezsirine",
   cvEn: `${import.meta.env.BASE_URL}cv_en.pdf`,
   cvFr: `${import.meta.env.BASE_URL}cv_fr.pdf`,
   summary: "Final-year Software Engineering student and graduate in Advanced Intelligent Systems, with a foundation in software development, information systems, and applied AI. I have hands-on experience building web applications, data-driven dashboards, and AI features in collaborative project teams. I am seeking a final-year internship in software engineering, information systems, or applied AI.",
@@ -19,6 +19,9 @@ export const profile = {
 export type Project = {
   slug: string; index: string; category: string; title: string; org: string; period: string;
   description: string; features: string[]; tags: string[];
+  disciplines: ("Full-Stack" | "AI" | "Mobile" | "Data")[];
+  visual?: { src: string; alt: string; label: string };
+  outcome?: string;
   views?: number; likes?: number;
   icon: "brain" | "heart" | "users"; github?: string; demo?: string;
 };
@@ -29,35 +32,80 @@ export const projects: Project[] = [
     org: "TEK-UP University", period: "September — December 2026",
     description: "An industrial monitoring platform for asset and sensor management, alerts, work orders, visual inspections, and predictive maintenance.",
     features: ["Role-based access with JWT and audit logging; 321 backend and 180 frontend tests.", "Anomaly detection trained on the SKAB pump benchmark with grouped cross-validation; gradient boosting reached F1 0.81 ± 0.08 (0.69 on held-out runs) and 0.4% false positives.", "Remaining useful life estimation on NASA C-MAPSS, Isolation Forest analysis on MetroPT-3, and YOLO-based visual inspection."],
-    tags: ["React", "Django REST", "scikit-learn", "YOLO", "Docker", "Testing"], icon: "brain",
+    tags: ["React", "Django REST", "scikit-learn", "YOLO", "Docker", "Testing"], disciplines: ["Full-Stack", "AI", "Data"], outcome: "F1 0.81 ± 0.08 in grouped validation · 0.4% false positives", icon: "brain",
   },
   {
     slug: "sympnet-cdss", index: "02", category: "Healthcare · Multi-Agent Systems", title: "Sympnet-CDSS",
     org: "TEK-UP University", period: "January — May 2026",
     description: "A telemedicine and clinical decision-support platform built on a microservices architecture with a multi-agent AI copilot.",
     features: [".NET 8 and Blazor application with role-based JWT authentication for doctors and patients.", "Real-time SignalR notifications, Whisper transcription, and prescription validation against PubMed guidance.", "AI diagnostic copilot (FastAPI, Llama 3, pgvector RAG) and clinical dashboard."],
-    tags: ["ASP.NET Core", "Blazor", "FastAPI", "Llama 3", "RAG", "pgvector"], icon: "heart",
+    tags: ["ASP.NET Core", "Blazor", "FastAPI", "Llama 3", "RAG", "pgvector"], disciplines: ["Full-Stack", "AI", "Data"], icon: "heart",
   },
   {
     slug: "erp-rh", index: "03", category: "HR · ERP & Generative AI", title: "ERP_RH",
     org: "TEK-UP University", period: "September — December 2025",
     description: "A full-stack HR ERP featuring access control, HR analytics, and AI-assisted job offer content generation.",
     features: ["Role-based access control with JWT and OAuth2 authentication.", "AI-powered job offer prediction using the OpenAI API and LinkedIn post publishing.", "KPI dashboard, JUnit/Mockito and Cypress tests, SonarQube analysis, and Docker/GitLab CI/CD pipeline with Trivy."],
-    tags: ["Spring Boot", "Angular", "MongoDB", "OpenAI API", "Docker", "GitLab CI/CD"], icon: "users",
+    tags: ["Spring Boot", "Angular", "MongoDB", "OpenAI API", "Docker", "GitLab CI/CD"], disciplines: ["Full-Stack", "AI", "Data"], github: "https://github.com/rezsirine/ERP_RH", icon: "users",
   },
 ];
 
-export type SkillGroup = { title: string; items: [string, string][] };
+export type SkillLevel = "Comfortable" | "Applied" | "Learning";
+export type Skill = { name: string; iconPath?: string; level: SkillLevel };
+export type SkillGroup = { title: string; items: Skill[] };
 export const skillGroups: SkillGroup[] = [
-  { title: "Languages & Front-end", items: [
-    ["TypeScript", "typescript/typescript-original.svg"], ["JavaScript", "javascript/javascript-original.svg"], ["Python", "python/python-original.svg"], ["PHP", "php/php-original.svg"], ["React", "react/react-original.svg"], ["Redux", "redux/redux-original.svg"], ["Next.js", "nextjs/nextjs-original.svg"], ["Angular", "angular/angular-original.svg"], ["React Native", "react/react-original.svg"], ["Django", "django/django-plain.svg"], [".NET", "dotnetcore/dotnetcore-original.svg"], ["Flutter", "flutter/flutter-original.svg"], ["HTML5", "html5/html5-original.svg"], ["CSS3", "css3/css3-original.svg"], ["Bootstrap", "bootstrap/bootstrap-original.svg"],
+  { title: "Frontend", items: [
+    { name: "React", iconPath: "react/react-original.svg", level: "Comfortable" },
+    { name: "TypeScript", iconPath: "typescript/typescript-original.svg", level: "Comfortable" },
+    { name: "JavaScript", iconPath: "javascript/javascript-original.svg", level: "Comfortable" },
+    { name: "Angular", iconPath: "angular/angular-original.svg", level: "Applied" },
+    { name: "Next.js", iconPath: "nextjs/nextjs-original.svg", level: "Applied" },
+    { name: "Redux", iconPath: "redux/redux-original.svg", level: "Applied" },
+    { name: "HTML5", iconPath: "html5/html5-original.svg", level: "Comfortable" },
+    { name: "CSS3", iconPath: "css3/css3-original.svg", level: "Comfortable" },
+    { name: "Bootstrap", iconPath: "bootstrap/bootstrap-original.svg", level: "Applied" },
+    { name: "React Native", iconPath: "react/react-original.svg", level: "Learning" },
+    { name: "Flutter", iconPath: "flutter/flutter-original.svg", level: "Learning" },
   ] },
-  { title: "Back-end, Data & Tools", items: [
-    ["Node.js", "nodejs/nodejs-original.svg"], ["Express", "express/express-original.svg"], ["Spring Boot", "spring/spring-original.svg"], ["ASP.NET Core", "dotnetcore/dotnetcore-original.svg"], ["FastAPI", "fastapi/fastapi-original.svg"], ["PostgreSQL", "postgresql/postgresql-original.svg"], ["MySQL", "mysql/mysql-original.svg"], ["MongoDB", "mongodb/mongodb-original.svg"], ["Firebase", "firebase/firebase-original.svg"], ["Docker", "docker/docker-original.svg"], ["GitHub Actions", "githubactions/githubactions-original.svg"], ["Git", "git/git-original.svg"],
+  { title: "Backend", items: [
+    { name: "Node.js", iconPath: "nodejs/nodejs-original.svg", level: "Comfortable" },
+    { name: "Express", iconPath: "express/express-original.svg", level: "Comfortable" },
+    { name: "Spring Boot", iconPath: "spring/spring-original.svg", level: "Applied" },
+    { name: "ASP.NET Core", iconPath: "dotnetcore/dotnetcore-original.svg", level: "Applied" },
+    { name: "Django", iconPath: "django/django-plain.svg", level: "Applied" },
+    { name: "FastAPI", iconPath: "fastapi/fastapi-original.svg", level: "Applied" },
+    { name: "PHP", iconPath: "php/php-original.svg", level: "Learning" },
+    { name: "Microservices", level: "Applied" },
+    { name: "REST APIs", level: "Comfortable" },
+  ] },
+  { title: "AI / Machine Learning", items: [
+    { name: "Python", iconPath: "python/python-original.svg", level: "Comfortable" },
+    { name: "Machine Learning", level: "Applied" },
+    { name: "scikit-learn", iconPath: "scikitlearn/scikitlearn-original.svg", level: "Applied" },
+    { name: "PyTorch", iconPath: "pytorch/pytorch-original.svg", level: "Learning" },
+    { name: "NLP", level: "Applied" },
+    { name: "LLMs & RAG", level: "Applied" },
+    { name: "Generative AI", level: "Applied" },
+  ] },
+  { title: "DevOps", items: [
+    { name: "Docker", iconPath: "docker/docker-original.svg", level: "Applied" },
+    { name: "Git", iconPath: "git/git-original.svg", level: "Comfortable" },
+    { name: "GitHub Actions", iconPath: "githubactions/githubactions-original.svg", level: "Applied" },
+    { name: "CI/CD", level: "Applied" },
+  ] },
+  { title: "Tools & Data", items: [
+    { name: "PostgreSQL", iconPath: "postgresql/postgresql-original.svg", level: "Applied" },
+    { name: "MySQL", iconPath: "mysql/mysql-original.svg", level: "Applied" },
+    { name: "MongoDB", iconPath: "mongodb/mongodb-original.svg", level: "Applied" },
+    { name: "Firebase", iconPath: "firebase/firebase-original.svg", level: "Learning" },
+    { name: "WebSockets", level: "Applied" },
+    { name: "WebRTC", level: "Applied" },
+    { name: "JWT / OAuth2", level: "Applied" },
+    { name: "Swagger / OpenAPI", level: "Applied" },
+    { name: "Postman", iconPath: "postman/postman-original.svg", level: "Comfortable" },
+    { name: "Jira", iconPath: "jira/jira-original.svg", level: "Comfortable" },
   ] },
 ];
-
-export const dataScience = ["Machine Learning", "NLP", "LLMs", "RAG", "Generative AI", "scikit-learn", "PyTorch", "WebRTC", "Microservices", "REST APIs", "WebSockets", "JWT", "OAuth2", "2FA", "CSRF", "Swagger / OpenAPI", "Postman", "Jira"];
 
 export const experienceProjects: Project[] = [
   {
@@ -65,28 +113,28 @@ export const experienceProjects: Project[] = [
     org: "LARIA Research Laboratory, ENSI", period: "January — November 2026",
     description: "A causal explainability framework for understanding how multi-agent language models reach collective decisions.",
     features: ["Counterfactual simulations to test how an agent's contribution changes a group decision.", "Dynamic causal influence graphs that trace interactions between agents.", "Benchmarks on medical decision-support and negotiation tasks against text-based baselines."],
-    tags: ["Python", "Groq API", "Llama 3", "Causal XAI", "LLM Agents"], icon: "brain",
+    tags: ["Python", "Groq API", "Llama 3", "Causal XAI", "LLM Agents"], disciplines: ["AI", "Data"], visual: { src: `${import.meta.env.BASE_URL}images/projects/scribe-graph.webp`, alt: "Causal influence graph produced by the SCRIBE research project", label: "Research output" }, github: "https://github.com/rezsirine/SCRIBE", icon: "brain",
   },
   {
     slug: "hr-trainer", index: "02", category: "Full-Stack Internship · EdTech", title: "HR Training",
     org: "3LM Solutions", period: "July — August 2026",
     description: "An AI-enhanced e-learning platform that helps learners during live lessons and automates repetitive course preparation for instructors.",
     features: ["Live WebRTC lecture transcription with Whisper and a retrieval-augmented learning copilot.", "AI-assisted syllabus and quiz generation using LLaMA models through Groq.", "NextAuth role-based access for learners, instructors, and administrators."],
-    tags: ["Next.js", "Express", "PostgreSQL", "Prisma", "Groq", "LLaMA 3", "Whisper", "WebRTC", "Docker"], icon: "brain",
+    tags: ["Next.js", "Express", "PostgreSQL", "Prisma", "Groq", "LLaMA 3", "Whisper", "WebRTC", "Docker"], disciplines: ["Full-Stack", "AI", "Data"], icon: "brain",
   },
   {
     slug: "e-learning-app", index: "03", category: "Full-Stack Internship · E-Learning", title: "E-Learning App",
     org: "UDG Group", period: "June — August 2025",
     description: "A learning platform for students, instructors, and administrators, combining course delivery, live classes, assessments, and real-time updates.",
     features: ["Role-based authentication and administration tools for users and courses.", "Live virtual classrooms with Jitsi Meet and WebRTC, plus Socket.IO notifications.", "Timed quizzes, assignments, exams, and course media managed through Cloudinary."],
-    tags: ["React", "Redux Toolkit", "Node.js", "Express", "MongoDB", "Socket.IO", "Jitsi Meet", "WebRTC", "Cloudinary"], icon: "users",
+    tags: ["React", "Redux Toolkit", "Node.js", "Express", "MongoDB", "Socket.IO", "Jitsi Meet", "WebRTC", "Cloudinary"], disciplines: ["Full-Stack", "Data"], github: "https://github.com/rezsirine/E-learningApp", icon: "users",
   },
   {
     slug: "security360", index: "04", category: "Software Development Internship · Enterprise", title: "Security360 Application",
     org: "COFICAB", period: "January — August 2024",
     description: "A secure business application with access-controlled workflows, record management, and operational dashboards.",
     features: ["Secure authentication and CRUD workflows built with Spring Boot and Angular.", "Interactive KPI dashboards with Chart.js and SQL performance improvements.", "Agile collaboration through code reviews, merge management, and technical documentation."],
-    tags: ["Spring Boot", "Angular", "Chart.js", "SQL", "Agile"], icon: "users",
+    tags: ["Spring Boot", "Angular", "Chart.js", "SQL", "Agile"], disciplines: ["Full-Stack", "Data"], icon: "users",
   },
 ];
 

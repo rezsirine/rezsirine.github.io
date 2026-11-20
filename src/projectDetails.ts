@@ -13,6 +13,12 @@ export const projectDetails: Record<string, ProjectDetailContent> = {
   "smartfactory-twin": {
     objective: "Turn industrial IoT sensor streams and inspection data into an operational view that helps maintenance teams spot abnormal equipment behaviour and plan interventions early.",
     impact: "The CV reports an F1 score of 0.81 ± 0.08 for gradient boosting on grouped cross-validation (0.69 on held-out runs) with a 0.4% false-positive rate, plus 321 backend and 180 frontend tests.",
+    metrics: [
+      { value: "0.81 ± 0.08", label: "F1 · grouped cross-validation" },
+      { value: "0.69", label: "F1 · held-out runs" },
+      { value: "0.4%", label: "False-positive rate" },
+      { value: "321 + 180", label: "Backend + frontend tests" },
+    ],
     tags: ["Industry 4.0", "Predictive maintenance", "IoT", "Deep learning", "Computer vision"],
     challenge: "Maintenance teams need to understand what is happening across equipment, act on alerts, and keep intervention records together. The project brings sensor monitoring, model outputs, inspection, and maintenance reporting into one workflow.",
     architecture: [
