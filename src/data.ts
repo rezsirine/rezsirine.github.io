@@ -23,7 +23,7 @@ export type Project = {
   visual?: { src: string; alt: string; label: string };
   outcome?: string;
   views?: number; likes?: number;
-  icon: "brain" | "heart" | "users"; github?: string; demo?: string;
+  icon: "brain" | "heart" | "users"; github?: string; githubMore?: { label: string; url: string }[]; demo?: string;
 };
 
 export const projects: Project[] = [
@@ -39,7 +39,7 @@ export const projects: Project[] = [
     org: "TEK-UP University", period: "January — May 2026",
     description: "A telemedicine and clinical decision-support platform built on a microservices architecture with a multi-agent AI copilot.",
     features: [".NET 8 and Blazor application with role-based JWT authentication for doctors and patients.", "Real-time SignalR notifications, Whisper transcription, and prescription validation against PubMed guidance.", "AI diagnostic copilot (FastAPI, Llama 3, pgvector RAG) and clinical dashboard."],
-    tags: ["ASP.NET Core", "Blazor", "FastAPI", "Llama 3", "RAG", "pgvector"], disciplines: ["Full-Stack", "AI", "Data"], icon: "heart",
+    tags: ["ASP.NET Core", "Blazor", "FastAPI", "Llama 3", "RAG", "pgvector"], disciplines: ["Full-Stack", "AI", "Data"], github: "https://github.com/Sympnet-CDSS/sympnet-web-service", githubMore: [{ label: "Mobile app", url: "https://github.com/Sympnet-CDSS/sympnet-mobile-service" }], icon: "heart",
   },
   {
     slug: "erp-rh", index: "03", category: "HR · ERP & Generative AI", title: "ERP_RH",
@@ -120,21 +120,21 @@ export const experienceProjects: Project[] = [
     org: "3LM Solutions", period: "July — August 2026",
     description: "An AI-enhanced e-learning platform that helps learners during live lessons and automates repetitive course preparation for instructors.",
     features: ["Live WebRTC lecture transcription with Whisper and a retrieval-augmented learning copilot.", "AI-assisted syllabus and quiz generation using LLaMA models through Groq.", "NextAuth role-based access for learners, instructors, and administrators."],
-    tags: ["Next.js", "Express", "PostgreSQL", "Prisma", "Groq", "LLaMA 3", "Whisper", "WebRTC", "Docker"], disciplines: ["Full-Stack", "AI", "Data"], icon: "brain",
+    tags: ["Next.js", "Express", "PostgreSQL", "Prisma", "Groq", "LLaMA 3", "Whisper", "WebRTC", "Docker"], disciplines: ["Full-Stack", "AI", "Data"], github: "https://github.com/HR-Trainer/hr-trainer-frontend", githubMore: [{ label: "Backend API", url: "https://github.com/HR-Trainer/hr-trainer-backend" }], icon: "brain",
   },
   {
     slug: "e-learning-app", index: "03", category: "Full-Stack Internship · E-Learning", title: "E-Learning App",
     org: "UDG Group", period: "June — August 2025",
     description: "A learning platform for students, instructors, and administrators, combining course delivery, live classes, assessments, and real-time updates.",
     features: ["Role-based authentication and administration tools for users and courses.", "Live virtual classrooms with Jitsi Meet and WebRTC, plus Socket.IO notifications.", "Timed quizzes, assignments, exams, and course media managed through Cloudinary."],
-    tags: ["React", "Redux Toolkit", "Node.js", "Express", "MongoDB", "Socket.IO", "Jitsi Meet", "WebRTC", "Cloudinary"], disciplines: ["Full-Stack", "Data"], github: "https://github.com/rezsirine/E-learningApp", icon: "users",
+    tags: ["React", "Redux Toolkit", "Node.js", "Express", "MongoDB", "Socket.IO", "Jitsi Meet", "WebRTC", "Cloudinary"], disciplines: ["Full-Stack", "Data"], github: "https://github.com/E-learningApplication/E-learning", icon: "users",
   },
   {
     slug: "security360", index: "04", category: "Software Development Internship · Enterprise", title: "Security360 Application",
     org: "COFICAB", period: "January — August 2024",
     description: "A secure business application with access-controlled workflows, record management, and operational dashboards.",
     features: ["Secure authentication and CRUD workflows built with Spring Boot and Angular.", "Interactive KPI dashboards with Chart.js and SQL performance improvements.", "Agile collaboration through code reviews, merge management, and technical documentation."],
-    tags: ["Spring Boot", "Angular", "Chart.js", "SQL", "Agile"], disciplines: ["Full-Stack", "Data"], icon: "users",
+    tags: ["Spring Boot", "Angular", "Chart.js", "SQL", "Agile"], disciplines: ["Full-Stack", "Data"], github: "https://github.com/ecurityApplication/security-360-", icon: "users",
   },
 ];
 
