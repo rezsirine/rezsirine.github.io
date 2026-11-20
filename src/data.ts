@@ -113,7 +113,7 @@ export const experienceProjects: Project[] = [
     org: "LARIA Research Laboratory, ENSI", period: "January — November 2026",
     description: "A causal explainability framework for understanding how multi-agent language models reach collective decisions.",
     features: ["Counterfactual simulations to test how an agent's contribution changes a group decision.", "Dynamic causal influence graphs that trace interactions between agents.", "Benchmarks on medical decision-support and negotiation tasks against text-based baselines."],
-    tags: ["Python", "Groq API", "Llama 3", "Causal XAI", "LLM Agents"], disciplines: ["AI", "Data"], visual: { src: `${import.meta.env.BASE_URL}images/projects/scribe-graph.webp`, alt: "Causal influence graph produced by the SCRIBE research project", label: "Research output" }, github: "https://github.com/rezsirine/SCRIBE", icon: "brain",
+    tags: ["Python", "Groq API", "Llama 3", "Causal XAI", "LLM Agents"], disciplines: ["AI", "Data"], github: "https://github.com/rezsirine/SCRIBE", icon: "brain",
   },
   {
     slug: "hr-trainer", index: "02", category: "Full-Stack Internship · EdTech", title: "HR Training",
