@@ -1,22 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 :root {
   color-scheme: dark;
-  --bg: #0e1013;
-  --surface: #15181d;
-  --surface-raised: #1b1e24;
-  --line: rgba(255, 255, 255, .09);
-  --line-strong: rgba(255, 255, 255, .16);
-  --text: #f1f0ed;
-  --muted: #a2a3a6;
-  --quiet: #74767b;
-  --accent: #b8a2ff;
-  --accent-strong: #8b6cff;
-  --blue: #80c7dc;
-  --green: #79d6a8;
-  --gradient: linear-gradient(115deg, #aa8cff, #68c7d9);
+  --bg: #10120f;
+  --surface: #171a16;
+  --surface-raised: #20241e;
+  --line: rgba(241, 242, 232, .10);
+  --line-strong: rgba(241, 242, 232, .19);
+  --text: #f0f1e8;
+  --muted: #a5aa9d;
+  --quiet: #73796e;
+  --accent: #d4f36a;
+  --accent-strong: #b8dc45;
+  --blue: #9cc7b4;
+  --green: #d4f36a;
+  --gradient: linear-gradient(115deg, #d4f36a, #a9d792);
   --content: 1160px;
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  font-family: "Manrope", "Segoe UI", Arial, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -25,19 +26,19 @@
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #f7f6f3;
-  --surface: #fff;
-  --surface-raised: #f0efeb;
-  --line: rgba(31, 31, 39, .09);
-  --line-strong: rgba(31, 31, 39, .16);
-  --text: #23232a;
-  --muted: #64646c;
-  --quiet: #888891;
-  --accent: #6745bf;
-  --accent-strong: #7958d4;
-  --blue: #287c91;
-  --green: #27815b;
-  --gradient: linear-gradient(115deg, #7250ca, #318ba1);
+  --bg: #f3f2ec;
+  --surface: #fbfaf5;
+  --surface-raised: #eaece1;
+  --line: rgba(24, 31, 20, .11);
+  --line-strong: rgba(24, 31, 20, .2);
+  --text: #1b2118;
+  --muted: #586052;
+  --quiet: #7e8678;
+  --accent: #6d8424;
+  --accent-strong: #54691b;
+  --blue: #34765e;
+  --green: #688121;
+  --gradient: linear-gradient(115deg, #7a962b, #b6ca69);
 }
 
 * { box-sizing: border-box; }
@@ -453,4 +454,73 @@ footer p, .back-top { color: var(--quiet); font-size: 9px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .section, .project-card, .timeline-item { opacity: 1; transform: none; }
+}
+
+/* Portfolio art direction: editorial, confident, and accessible */
+:root { --content: 1200px; }
+body { letter-spacing: -.012em; }
+.topbar { height: 74px; border-bottom-color: color-mix(in srgb, var(--accent) 17%, var(--line)); }
+.brand-mark { border-radius: 50%; background: var(--accent); color: #141710; border-color: var(--accent); font-weight: 800; }
+.brand, .section-heading h2, .hero h1, .hero h2, .project-info h3 { font-family: "Space Grotesk", "Manrope", sans-serif; }
+.hero { min-height: min(790px, calc(100svh - 74px)); padding-top: 78px; padding-bottom: 100px; }
+.hero::before { top: 0; right: -9%; width: 740px; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 10%, transparent), transparent 68%); }
+.availability { border-radius: 4px; background: transparent; letter-spacing: .08em; }
+.intro-line { color: var(--muted); font: 500 13px "DM Mono", monospace; }
+.hero h1 { font-size: clamp(62px, 8vw, 104px); letter-spacing: -.09em; }
+.hero h2 { color: var(--text); font-family: "Space Grotesk", sans-serif; font-size: clamp(30px, 3.8vw, 48px); font-weight: 500; letter-spacing: -.065em; }
+.hero h2 span { color: var(--accent); }
+.hero-text { max-width: 520px; font-size: 14px; }
+.hero-visual { min-height: 570px; }
+.orbit { border-color: color-mix(in srgb, var(--accent) 16%, transparent); }
+.orbit-one { width: 540px; height: 540px; }
+.orbit-two { width: 440px; height: 440px; border-style: solid; }
+.profile-card { width: min(390px, 90%); border-radius: 8px; box-shadow: 0 35px 90px rgba(0,0,0,.32); }
+.profile-top { font-family: "DM Mono", monospace; }
+.avatar-frame { height: 350px; }
+.avatar { border-radius: 46% 46% 2px 2px; }
+.profile-code { font-family: "DM Mono", monospace; }
+.experience-chip, .stack-chip { border-radius: 6px; box-shadow: 0 16px 42px rgba(0,0,0,.24); }
+.experience-chip strong { color: var(--accent); font-family: "Space Grotesk", sans-serif; }
+.section { padding-top: 124px; padding-bottom: 124px; }
+.section-heading { margin-bottom: 54px; }
+.eyebrow { font-family: "DM Mono", monospace; }
+.section-heading h2 { max-width: 760px; font-weight: 600; letter-spacing: -.07em; }
+.about-statement, .about-copy, .education-panel, .contact-panel { border-radius: 7px; }
+.about-statement { background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 13%, var(--surface)), var(--surface) 85%); }
+.principles > div { border-radius: 5px; }
+.skills-section { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.skills-grid { border-radius: 6px; }
+.skill-card { min-height: 135px; }
+.tags span { border-radius: 3px; }
+.experience-view-options, .project-card, .education-panel, .contact-panel, .contact-form { border-radius: 7px; }
+.project-card { grid-template-columns: .72fr 1.28fr; min-height: 345px; }
+.project-image { min-height: 100%; }
+.visual-icon { width: 118px; height: 118px; border-radius: 50%; background: color-mix(in srgb, var(--bg) 60%, transparent); }
+.project-info { padding: clamp(26px, 4vw, 48px); }
+.project-info h3 { font-size: clamp(25px, 3vw, 34px); }
+.project-category { font-family: "DM Mono", monospace; }
+.project-links a { min-height: 36px; }
+.timeline-item h3 { font-family: "Space Grotesk", sans-serif; font-size: 20px; }
+.contact-panel { border-color: color-mix(in srgb, var(--accent) 22%, var(--line)); background: var(--surface); }
+.contact-copy h2 { font-family: "Space Grotesk", sans-serif; }
+.button, .nav-cta { border-radius: 5px; }
+.button.primary { color: #15180f; }
+.cv-downloads .button { min-height: 42px; }
+.case-cover { border-radius: 7px; }
+.architecture-grid article { border-radius: 6px; }
+
+@media (max-width: 900px) {
+  .hero { min-height: auto; padding-top: 64px; }
+  .hero-visual { min-height: 500px; }
+  .orbit-one { width: min(500px, 80vw); height: min(500px, 80vw); }
+  .section { padding-top: 90px; padding-bottom: 90px; }
+}
+@media (max-width: 700px) {
+  .hero { padding-top: 50px; }
+  .hero h1 { font-size: clamp(55px, 14vw, 78px); }
+  .hero h2 { font-size: clamp(29px, 8vw, 39px); }
+  .hero-visual { min-height: 465px; }
+  .section { padding-top: 76px; padding-bottom: 76px; }
+  .project-card { grid-template-columns: 1fr; }
+  .project-image { min-height: 210px; }
 }

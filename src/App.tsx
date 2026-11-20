@@ -372,10 +372,10 @@ export default function App() {
         {activeProject ? <ProjectDetail project={activeProject} status={formStatus} onSubmit={submitForm} isExperience={activeProjectIsExperience} /> : <>
         <section id="accueil" className="hero">
           <div className="hero-copy">
-            <div className="availability"><i /> Seeking a PFE internship · 2027</div>
+            <div className="availability"><i /> Open to PFE opportunities · 2027</div>
             <p className="intro-line">Hello, I’m</p>
             <h1>{profile.name}<span>.</span></h1>
-            <h2>Full-Stack<br />&amp; Applied AI</h2>
+            <h2>Engineering thoughtful<br /><span>digital experiences.</span></h2>
             <p className="hero-text">A final-year Software Engineering student turning complex challenges into <strong>reliable web products</strong> and <strong>applied AI solutions</strong>.</p>
             <div className="hero-actions">
               <a className="button primary" href="#projets">Explore my work <Icon name="arrow" /></a>
@@ -410,14 +410,14 @@ export default function App() {
               </div>
               <div className="profile-code">
                 <p><em>01</em> <b>const</b> sirine = {"{"}</p>
-                <p><em>02</em> &nbsp;&nbsp;stack: <strong>"React · Node · Python"</strong>,</p>
-                <p><em>03</em> &nbsp;&nbsp;focus: <strong>"Applied AI"</strong>,</p>
-                <p><em>04</em> &nbsp;&nbsp;seeking: <strong>"Final-year internship"</strong></p>
+                <p><em>02</em> &nbsp;&nbsp;craft: <strong>"Full-stack products"</strong>,</p>
+                <p><em>03</em> &nbsp;&nbsp;explore: <strong>"Applied AI"</strong>,</p>
+                <p><em>04</em> &nbsp;&nbsp;based: <strong>"Ariana, Tunisia"</strong></p>
                 <p><em>05</em> {"}"}</p>
               </div>
             </div>
-            <div className="experience-chip"><strong>2</strong><span>engineering &amp;<br />AI disciplines</span></div>
-            <div className="stack-chip"><Icon name="terminal" /><span>Full-stack.<br /><strong>AI-driven.</strong></span></div>
+            <div className="experience-chip"><strong>01</strong><span>Software engineering<br />&amp; intelligent systems</span></div>
+            <div className="stack-chip"><Icon name="terminal" /><span>Build with purpose.<br /><strong>Learn continuously.</strong></span></div>
           </div>
           <a className="scroll-cue" href="#apropos"><span>Discover</span><i><Icon name="arrow" size={15} /></i></a>
         </section>
