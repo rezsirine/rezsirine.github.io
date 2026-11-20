@@ -3,7 +3,7 @@ export const profile = {
   name: "Sirine Rezgui",
   firstName: "Sirine",
   initials: "SR",
-  title: "Final-Year Software Engineering Student | Full-Stack & AI",
+  title: "Software Engineering Student | Advanced Intelligent Systems Graduate",
   email: "sirine.rezgui@ensi-uma.tn",
   phone: "+216 55194119",
   phoneHref: "+216 55194119",
@@ -11,8 +11,9 @@ export const profile = {
   linkedinLabel: "LinkedIn",
   linkedin: "" as string,
   github: "" as string,
-  cv: `${import.meta.env.BASE_URL}CV_Sirine_Rezgui.pdf`,
-  summary: "Final-year Software Engineering student specializing in software engineering and information systems. I combine full-stack development, digital product design, and applied artificial intelligence. Adaptable, proactive, and comfortable working in Agile teams, I am seeking a final-year project internship in software engineering, information systems, or applied AI.",
+  cvEn: `${import.meta.env.BASE_URL}cv_en.pdf`,
+  cvFr: `${import.meta.env.BASE_URL}cv_fr.pdf`,
+  summary: "Final-year Software Engineering student and graduate in Advanced Intelligent Systems, with a foundation in software development, information systems, and applied AI. I have hands-on experience building web applications, data-driven dashboards, and AI features in collaborative project teams. I am seeking a final-year internship in software engineering, information systems, or applied AI.",
 };
 
 export type Project = {
@@ -25,21 +26,21 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "smartfactory-twin", index: "01", category: "Industry · Predictive Maintenance", title: "SmartFactory Twin",
-    org: "TEK-UP University", period: "March — May 2026",
-    description: "An industrial digital twin for real-time equipment monitoring and failure prediction from IoT time-series data.",
-    features: ["Real-time dashboard, multi-level alerts, and automated PDF maintenance reports.", "LSTM Autoencoder and GRU models for anomaly detection and failure classification (AUC 0.90; failures detected up to 15 cycles in advance).", "YOLOv8 visual inspection, Vitest/Pytest quality tests, and Docker deployment with GitHub Actions CI/CD."],
-    tags: ["React", "Django REST", "FastAPI", "PyTorch", "YOLOv8", "Docker"], icon: "brain",
+    org: "TEK-UP University", period: "September — December 2026",
+    description: "An industrial monitoring platform for asset and sensor management, alerts, work orders, visual inspections, and predictive maintenance.",
+    features: ["Role-based access with JWT and audit logging; 321 backend and 180 frontend tests.", "Anomaly detection trained on the SKAB pump benchmark with grouped cross-validation; gradient boosting reached F1 0.81 ± 0.08 (0.69 on held-out runs) and 0.4% false positives.", "Remaining useful life estimation on NASA C-MAPSS, Isolation Forest analysis on MetroPT-3, and YOLO-based visual inspection."],
+    tags: ["React", "Django REST", "scikit-learn", "YOLO", "Docker", "Testing"], icon: "brain",
   },
   {
     slug: "sympnet-cdss", index: "02", category: "Healthcare · Multi-Agent Systems", title: "Sympnet-CDSS",
-    org: "TEK-UP University", period: "March 2026",
+    org: "TEK-UP University", period: "January — May 2026",
     description: "A telemedicine and clinical decision-support platform built on a microservices architecture with a multi-agent AI copilot.",
     features: [".NET 8 and Blazor application with role-based JWT authentication for doctors and patients.", "Real-time SignalR notifications, Whisper transcription, and prescription validation against PubMed guidance.", "AI diagnostic copilot (FastAPI, Llama 3, pgvector RAG) and clinical dashboard."],
     tags: ["ASP.NET Core", "Blazor", "FastAPI", "Llama 3", "RAG", "pgvector"], icon: "heart",
   },
   {
     slug: "erp-rh", index: "03", category: "HR · ERP & Generative AI", title: "ERP_RH",
-    org: "TEK-UP University", period: "October 2026",
+    org: "TEK-UP University", period: "September — December 2025",
     description: "A full-stack HR ERP featuring access control, HR analytics, and AI-assisted job offer content generation.",
     features: ["Role-based access control with JWT and OAuth2 authentication.", "AI-powered job offer prediction using the OpenAI API and LinkedIn post publishing.", "KPI dashboard, JUnit/Mockito and Cypress tests, SonarQube analysis, and Docker/GitLab CI/CD pipeline with Trivy."],
     tags: ["Spring Boot", "Angular", "MongoDB", "OpenAI API", "Docker", "GitLab CI/CD"], icon: "users",
@@ -61,28 +62,28 @@ export const dataScience = ["Machine Learning", "NLP", "LLMs", "RAG", "Generativ
 export const experienceProjects: Project[] = [
   {
     slug: "scribe", index: "01", category: "Research Internship · Causal XAI", title: "SCRIBE",
-    org: "LARIA Research Laboratory", period: "June 2026 — Present",
+    org: "LARIA Research Laboratory, ENSI", period: "January — November 2026",
     description: "A causal explainability framework for understanding how multi-agent language models reach collective decisions.",
     features: ["Counterfactual simulations to test how an agent's contribution changes a group decision.", "Dynamic causal influence graphs that trace interactions between agents.", "Benchmarks on medical decision-support and negotiation tasks against text-based baselines."],
     tags: ["Python", "Groq API", "Llama 3", "Causal XAI", "LLM Agents"], icon: "brain",
   },
   {
     slug: "hr-trainer", index: "02", category: "Full-Stack Internship · EdTech", title: "HR Training",
-    org: "3LM Solutions", period: "June 2026 — Present",
+    org: "3LM Solutions", period: "July — August 2026",
     description: "An AI-enhanced e-learning platform that helps learners during live lessons and automates repetitive course preparation for instructors.",
     features: ["Live WebRTC lecture transcription with Whisper and a retrieval-augmented learning copilot.", "AI-assisted syllabus and quiz generation using LLaMA models through Groq.", "NextAuth role-based access for learners, instructors, and administrators."],
     tags: ["Next.js", "Express", "PostgreSQL", "Prisma", "Groq", "LLaMA 3", "Whisper", "WebRTC", "Docker"], icon: "brain",
   },
   {
     slug: "e-learning-app", index: "03", category: "Full-Stack Internship · E-Learning", title: "E-Learning App",
-    org: "UDG Group", period: "June 2025 — Present",
+    org: "UDG Group", period: "June — August 2025",
     description: "A learning platform for students, instructors, and administrators, combining course delivery, live classes, assessments, and real-time updates.",
     features: ["Role-based authentication and administration tools for users and courses.", "Live virtual classrooms with Jitsi Meet and WebRTC, plus Socket.IO notifications.", "Timed quizzes, assignments, exams, and course media managed through Cloudinary."],
     tags: ["React", "Redux Toolkit", "Node.js", "Express", "MongoDB", "Socket.IO", "Jitsi Meet", "WebRTC", "Cloudinary"], icon: "users",
   },
   {
     slug: "security360", index: "04", category: "Software Development Internship · Enterprise", title: "Security360 Application",
-    org: "COFICAB", period: "January 2024 — Present",
+    org: "COFICAB", period: "January — August 2024",
     description: "A secure business application with access-controlled workflows, record management, and operational dashboards.",
     features: ["Secure authentication and CRUD workflows built with Spring Boot and Angular.", "Interactive KPI dashboards with Chart.js and SQL performance improvements.", "Agile collaboration through code reviews, merge management, and technical documentation."],
     tags: ["Spring Boot", "Angular", "Chart.js", "SQL", "Agile"], icon: "users",

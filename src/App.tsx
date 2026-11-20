@@ -372,14 +372,17 @@ export default function App() {
         {activeProject ? <ProjectDetail project={activeProject} status={formStatus} onSubmit={submitForm} isExperience={activeProjectIsExperience} /> : <>
         <section id="accueil" className="hero">
           <div className="hero-copy">
-            <div className="availability"><i /> Seeking a Final-Year Internship</div>
+            <div className="availability"><i /> Seeking a PFE internship · 2027</div>
             <p className="intro-line">Hello, I’m</p>
             <h1>{profile.name}<span>.</span></h1>
             <h2>Full-Stack<br />&amp; Applied AI</h2>
             <p className="hero-text">A final-year Software Engineering student turning complex challenges into <strong>reliable web products</strong> and <strong>applied AI solutions</strong>.</p>
             <div className="hero-actions">
               <a className="button primary" href="#projets">Explore my work <Icon name="arrow" /></a>
-              <a className="button secondary" href={profile.cv} download><Icon name="download" /> Download my CV</a>
+            </div>
+            <div className="cv-downloads" aria-label="Download CV">
+              <a className="button secondary" href={profile.cvEn} download><Icon name="download" /> CV · English</a>
+              <a className="button secondary" href={profile.cvFr} download><Icon name="download" /> CV · Français</a>
             </div>
             <div className="hero-meta">
               <span><Icon name="map" size={16} /> {profile.location}</span>
@@ -413,7 +416,7 @@ export default function App() {
                 <p><em>05</em> {"}"}</p>
               </div>
             </div>
-            <div className="experience-chip"><strong>2</strong><span>degrees<br />in progress</span></div>
+            <div className="experience-chip"><strong>2</strong><span>engineering &amp;<br />AI disciplines</span></div>
             <div className="stack-chip"><Icon name="terminal" /><span>Full-stack.<br /><strong>AI-driven.</strong></span></div>
           </div>
           <a className="scroll-cue" href="#apropos"><span>Discover</span><i><Icon name="arrow" size={15} /></i></a>
@@ -498,7 +501,10 @@ export default function App() {
             <div className="education-panel">
               <h3 className="skill-group-title">Education</h3>
               <div className="education-list">{education.map((item) => <div key={item.degree}><time>{item.period}</time><strong>{item.school}</strong><small>{item.degree}</small></div>)}</div>
-              <a className="button secondary" href={profile.cv} download>Download my CV <Icon name="download" /></a>
+              <div className="cv-downloads">
+                <a className="button secondary" href={profile.cvEn} download>CV · English <Icon name="download" /></a>
+                <a className="button secondary" href={profile.cvFr} download>CV · Français <Icon name="download" /></a>
+              </div>
             </div>
             <div className="education-panel">
               <h3 className="skill-group-title">Languages</h3>

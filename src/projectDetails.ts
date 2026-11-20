@@ -12,18 +12,18 @@ export type ProjectDetailContent = {
 export const projectDetails: Record<string, ProjectDetailContent> = {
   "smartfactory-twin": {
     objective: "Turn industrial IoT sensor streams and inspection data into an operational view that helps maintenance teams spot abnormal equipment behaviour and plan interventions early.",
-    impact: "The CV reports an anomaly-detection and failure-classification pipeline reaching AUC 0.90, with failures detected up to 15 cycles ahead, alongside live monitoring and visual inspection.",
+    impact: "The CV reports an F1 score of 0.81 ± 0.08 for gradient boosting on grouped cross-validation (0.69 on held-out runs) with a 0.4% false-positive rate, plus 321 backend and 180 frontend tests.",
     tags: ["Industry 4.0", "Predictive maintenance", "IoT", "Deep learning", "Computer vision"],
     challenge: "Maintenance teams need to understand what is happening across equipment, act on alerts, and keep intervention records together. The project brings sensor monitoring, model outputs, inspection, and maintenance reporting into one workflow.",
     architecture: [
       { title: "Monitoring", items: ["Web dashboard for live equipment and sensor views", "Multi-level status and alert management", "Automated PDF maintenance reports"] },
-      { title: "Predictive models", items: ["LSTM Autoencoder for anomaly detection on time-series data", "GRU classifier for failure prediction", "YOLOv8 for visual inspection"] },
+      { title: "Predictive models", items: ["Anomaly detection trained on the SKAB pump benchmark", "Remaining useful life estimation using NASA C-MAPSS", "Isolation Forest on MetroPT-3 and YOLO-based visual inspection"] },
       { title: "Application stack", items: ["React frontend and Django REST backend", "FastAPI service for model inference", "Docker containers and GitHub Actions CI/CD"] },
-      { title: "Quality", items: ["Vitest unit and integration checks", "Pytest coverage for Python services", "Reported AUC 0.90 and up to 15-cycle early detection"] },
+      { title: "Quality", items: ["321 backend tests and 180 frontend tests", "Grouped cross-validation to avoid leakage between data files", "F1 0.81 ± 0.08; 0.69 on held-out runs and 0.4% false positives"] },
     ],
     decisions: [
-      { title: "Combine signals", description: "Time-series models flag abnormal behaviour and classify failures, while YOLOv8 supports visual inspection from field images." },
-      { title: "Make alerts actionable", description: "The interface groups equipment status, alert severity, and maintenance reports so teams can move from a signal to a documented intervention." },
+      { title: "Evaluate against realistic data", description: "The anomaly detector is trained and evaluated on the SKAB pump benchmark with file-grouped cross-validation; additional analyses cover NASA C-MAPSS and MetroPT-3." },
+      { title: "Connect monitoring to operations", description: "Asset and sensor management, alerts, work orders, visual inspections, and audit logging bring operational workflows together." },
       { title: "Package for delivery", description: "Docker and GitHub Actions provide a repeatable path for building and deploying the application." },
     ],
   },
