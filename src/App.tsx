@@ -295,6 +295,12 @@ export default function App() {
     if (card) card.style.transform = "";
   }
 
+  function trackCursor(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== "mouse") return;
+    document.documentElement.style.setProperty("--cursor-x", `${event.clientX}px`);
+    document.documentElement.style.setProperty("--cursor-y", `${event.clientY}px`);
+  }
+
   useEffect(() => {
     const syncProjectRoute = () => {
       const slug = readProjectSlug(window.location.hash);
@@ -317,6 +323,26 @@ export default function App() {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem("sirine-theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    let frame = 0;
+    const updateProgress = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+        document.documentElement.style.setProperty("--scroll-progress", String(progress / 100));
+      });
+    };
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
+    };
+  }, []);
 
   useEffect(() => {
     if (formStatus !== "success" && formStatus !== "error") return;
@@ -366,7 +392,8 @@ export default function App() {
   }
 
   return (
-    <div className="site-shell">
+    <div className="site-shell" onPointerMove={trackCursor}>
+      <div className="cursor-aura" aria-hidden="true" />
       {(formStatus === "success" || formStatus === "error") && (
         <div className={`form-toast ${formStatus}`} role={formStatus === "success" ? "status" : "alert"} aria-live={formStatus === "success" ? "polite" : "assertive"}>
           <span className="toast-mark" aria-hidden="true">{formStatus === "success" ? "✓" : "!"}</span>

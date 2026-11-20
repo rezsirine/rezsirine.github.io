@@ -456,6 +456,9 @@ footer p, .back-top { color: var(--quiet); font-size: 9px; }
 }
 
 /* Cursor response stays restrained and keeps the original violet-blue palette. */
+.topbar { position: sticky; }
+.topbar::before { position: absolute; right: 0; bottom: 0; left: 0; height: 2px; background: var(--gradient); box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 46%, transparent); content: ""; transform: scaleX(var(--scroll-progress, 0)); transform-origin: left; }
+.cursor-aura { position: fixed; z-index: 2; top: var(--cursor-y, -500px); left: var(--cursor-x, -500px); width: 300px; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 12%, transparent), color-mix(in srgb, var(--blue) 5%, transparent) 36%, transparent 70%); opacity: .7; pointer-events: none; translate: -50% -50%; transition: top .09s linear, left .09s linear; }
 .profile-card { transition: transform .18s ease-out; }
 .architecture-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .architecture-heading p { max-width: 420px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
@@ -473,6 +476,10 @@ footer p, .back-top { color: var(--quiet); font-size: 9px; }
   .architecture-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
   .project-card, .project-card.is-visible, .project-card.is-visible:hover { transform: none; will-change: auto; }
   .architecture-grid article:hover { transform: none; }
+  .cursor-aura { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cursor-aura { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .project-card, .architecture-grid article, .profile-card { transform: none !important; transition: none !important; }
