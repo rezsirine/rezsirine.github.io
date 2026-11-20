@@ -131,9 +131,8 @@ function ProjectDetail({ project, status, onSubmit, isExperience = false }: { pr
         )}
       </header>
 
-      {(project.github || project.githubMore?.length || project.demo) && <div className="case-resource-links">
+      {(project.github || project.demo) && <div className="case-resource-links">
         {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer"><Icon name="github" /> Source code <Icon name="external" size={14} /></a>}
-        {project.githubMore?.map((repo) => <a key={repo.url} href={repo.url} target="_blank" rel="noopener noreferrer"><Icon name="github" /> {repo.label} <Icon name="external" size={14} /></a>)}
         {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer"><Icon name="external" /> Live demo</a>}
       </div>}
 
@@ -241,7 +240,6 @@ function ProjectCard({ project, experience = false }: { project: Project; experi
         <div className="project-links">
           <a className="case-study-link" href={`#project/${project.slug}`}>{experience ? "View experience" : "View case study"} <Icon name="arrow" /></a>
           {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer"><Icon name="github" /> View on GitHub</a>}
-          {project.githubMore?.map((repo) => <a key={repo.url} href={repo.url} target="_blank" rel="noopener noreferrer"><Icon name="github" /> {repo.label}</a>)}
           {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer"><Icon name="external" /> Live demo</a>}
         </div>
       </div>

@@ -23,7 +23,7 @@ export type Project = {
   visual?: { src: string; alt: string; label: string };
   outcome?: string;
   views?: number; likes?: number;
-  icon: "brain" | "heart" | "users"; github?: string; githubMore?: { label: string; url: string }[]; demo?: string;
+  icon: "brain" | "heart" | "users"; github?: string; demo?: string;
 };
 
 export const projects: Project[] = [
@@ -32,14 +32,14 @@ export const projects: Project[] = [
     org: "TEK-UP University", period: "September — December 2026",
     description: "An industrial monitoring platform for asset and sensor management, alerts, work orders, visual inspections, and predictive maintenance.",
     features: ["Role-based access with JWT and audit logging; 321 backend and 180 frontend tests.", "Anomaly detection trained on the SKAB pump benchmark with grouped cross-validation; gradient boosting reached F1 0.81 ± 0.08 (0.69 on held-out runs) and 0.4% false positives.", "Remaining useful life estimation on NASA C-MAPSS, Isolation Forest analysis on MetroPT-3, and YOLO-based visual inspection."],
-    tags: ["React", "Django REST", "scikit-learn", "YOLO", "Docker", "Testing"], disciplines: ["Full-Stack", "AI", "Data"], outcome: "F1 0.81 ± 0.08 in grouped validation · 0.4% false positives", icon: "brain",
+    tags: ["React", "Django REST", "scikit-learn", "YOLO", "Docker", "Testing"], disciplines: ["Full-Stack", "AI", "Data"], outcome: "F1 0.81 ± 0.08 in grouped validation · 0.4% false positives", github: "https://github.com/orgs/smartfactory-twin/repositories", icon: "brain",
   },
   {
     slug: "sympnet-cdss", index: "02", category: "Healthcare · Multi-Agent Systems", title: "Sympnet-CDSS",
     org: "TEK-UP University", period: "January — May 2026",
     description: "A telemedicine and clinical decision-support platform built on a microservices architecture with a multi-agent AI copilot.",
     features: [".NET 8 and Blazor application with role-based JWT authentication for doctors and patients.", "Real-time SignalR notifications, Whisper transcription, and prescription validation against PubMed guidance.", "AI diagnostic copilot (FastAPI, Llama 3, pgvector RAG) and clinical dashboard."],
-    tags: ["ASP.NET Core", "Blazor", "FastAPI", "Llama 3", "RAG", "pgvector"], disciplines: ["Full-Stack", "AI", "Data"], github: "https://github.com/Sympnet-CDSS/sympnet-web-service", githubMore: [{ label: "Mobile app", url: "https://github.com/Sympnet-CDSS/sympnet-mobile-service" }], icon: "heart",
+    tags: ["ASP.NET Core", "Blazor", "FastAPI", "Llama 3", "RAG", "pgvector"], disciplines: ["Full-Stack", "AI", "Data"], github: "https://github.com/orgs/Sympnet-CDSS/repositories", icon: "heart",
   },
   {
     slug: "erp-rh", index: "03", category: "HR · ERP & Generative AI", title: "ERP_RH",
@@ -120,7 +120,7 @@ export const experienceProjects: Project[] = [
     org: "3LM Solutions", period: "July — August 2026",
     description: "An AI-enhanced e-learning platform that helps learners during live lessons and automates repetitive course preparation for instructors.",
     features: ["Live WebRTC lecture transcription with Whisper and a retrieval-augmented learning copilot.", "AI-assisted syllabus and quiz generation using LLaMA models through Groq.", "NextAuth role-based access for learners, instructors, and administrators."],
-    tags: ["Next.js", "Express", "PostgreSQL", "Prisma", "Groq", "LLaMA 3", "Whisper", "WebRTC", "Docker"], disciplines: ["Full-Stack", "AI", "Data"], github: "https://github.com/HR-Trainer/hr-trainer-frontend", githubMore: [{ label: "Backend API", url: "https://github.com/HR-Trainer/hr-trainer-backend" }], icon: "brain",
+    tags: ["Next.js", "Express", "PostgreSQL", "Prisma", "Groq", "LLaMA 3", "Whisper", "WebRTC", "Docker"], disciplines: ["Full-Stack", "AI", "Data"], github: "https://github.com/orgs/HR-Trainer/repositories", icon: "brain",
   },
   {
     slug: "e-learning-app", index: "03", category: "Full-Stack Internship · E-Learning", title: "E-Learning App",
