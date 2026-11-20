@@ -8,6 +8,40 @@ function readProjectSlug(hash: string) {
   return hash.match(/^#project\/([^/?#]+)/)?.[1] ?? null;
 }
 
+let portfolioViewRequest: Promise<number | null> | null = null;
+
+function fetchPortfolioViewCount() {
+  if (portfolioViewRequest) return portfolioViewRequest;
+  const storageKey = "sirine-portfolio-view-counted-v1";
+  let counted = false;
+  try {
+    counted = localStorage.getItem(storageKey) === "1";
+  } catch {
+    // Continue with a normal page view if browser storage is unavailable.
+  }
+
+  const url = new URL("https://counterapi.com/api/rezsirine.github.io/view/portfolio-visits");
+  if (counted) url.searchParams.set("readOnly", "true");
+  portfolioViewRequest = fetch(url, { cache: "no-store" })
+    .then((response) => {
+      if (!response.ok) throw new Error("Counter service unavailable");
+      return response.json() as Promise<{ value?: number }>;
+    })
+    .then((result) => {
+      if (typeof result.value !== "number") return null;
+      if (!counted) {
+        try {
+          localStorage.setItem(storageKey, "1");
+        } catch {
+          // The displayed total still works when storage is disabled.
+        }
+      }
+      return result.value;
+    })
+    .catch(() => null);
+  return portfolioViewRequest;
+}
+
 type IconName =
   | "arrow"
   | "brain"
@@ -17,6 +51,7 @@ type IconName =
   | "users"
   | "code"
   | "external"
+  | "eye"
   | "github"
   | "linkedin"
   | "mail"
@@ -35,6 +70,7 @@ const iconPaths: Record<IconName, ReactNode> = {
   users: <><circle cx="9" cy="8" r="3.2" /><path d="M3 20a6 6 0 0 1 12 0M16 5a3.2 3.2 0 0 1 0 6M18 20a5 5 0 0 0-3-4.6" /></>,
   code: <><path d="m8 9-3 3 3 3M16 9l3 3-3 3M14 5l-4 14" /></>,
   external: <><path d="M15 4h5v5M20 4l-9 9" /><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5" /></>,
+  eye: <><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></>,
   github: <><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7A5.4 5.4 0 0 0 19.3 4 5 5 0 0 0 19.1.5S18 0 15 2a13.4 13.4 0 0 0-7 0C5 .1 3.9.5 3.9.5A5 5 0 0 0 3.7 4a5.4 5.4 0 0 0-1.5 3.7c0 5.3 3.5 6.5 6.8 6.9A4.8 4.8 0 0 0 8 18v4" /><path d="M8 19c-3 .9-3-1.5-4-2" /></>,
   linkedin: <><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6ZM2 9h4v12H2z" /><path d="M4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" /></>,
   mail: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></>,
@@ -307,6 +343,7 @@ function ExperienceCards() {
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">(() => (localStorage.getItem("sirine-theme") as "dark" | "light") || "dark");
+  const [viewCount, setViewCount] = useState<number | null>(null);
   const [formStatus, setFormStatus] = useState<FormStatus>("idle");
   const [experienceMode, setExperienceMode] = useState<"cards" | "list">("cards");
   const [activeSection, setActiveSection] = useState("accueil");
@@ -357,6 +394,14 @@ export default function App() {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem("sirine-theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    let active = true;
+    fetchPortfolioViewCount().then((count) => {
+      if (active && count !== null) setViewCount(count);
+    });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     let frame = 0;
@@ -492,6 +537,7 @@ export default function App() {
             <div className="hero-meta">
               <span><Icon name="map" size={16} /> {profile.location}</span>
               <span><i /> AR · FR · EN · DE</span>
+              {viewCount !== null && <span className="visitor-count" aria-label={`${viewCount.toLocaleString()} portfolio views`}><Icon name="eye" size={14} /><strong>{viewCount.toLocaleString()}</strong><small>portfolio views</small></span>}
             </div>
           </div>
 

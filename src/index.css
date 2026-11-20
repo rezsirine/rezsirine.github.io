@@ -102,6 +102,10 @@ button { color: inherit; }
 .hero-meta { display: flex; flex-wrap: wrap; gap: 21px; margin-top: 27px; color: var(--quiet); font: 500 9px ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; }
 .hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
 .hero-meta i { width: 6px; height: 6px; flex-basis: 6px; animation: none; box-shadow: none; }
+.hero-meta .visitor-count { gap: 7px; padding: 6px 10px; border: 1px solid color-mix(in srgb, var(--accent) 23%, var(--line)); border-radius: 999px; background: color-mix(in srgb, var(--surface) 72%, transparent); letter-spacing: .04em; }
+.visitor-count svg { color: var(--accent); }
+.visitor-count strong { color: var(--text); font: 650 10px "Space Grotesk", "Inter", sans-serif; font-variant-numeric: tabular-nums; }
+.visitor-count small { color: var(--quiet); font-size: 8px; }
 .hero-visual { position: relative; display: grid; min-height: 535px; place-items: center; animation: enter-fade .9s .12s both; }
 .hero-visual::before { content: ""; position: absolute; width: min(440px, 90%); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 18%, transparent), transparent 68%); }
 .orbit { position: absolute; border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent); border-radius: 50%; pointer-events: none; }
