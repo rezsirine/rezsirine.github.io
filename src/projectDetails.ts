@@ -33,7 +33,7 @@ export const projectDetails: Record<string, ProjectDetailContent> = {
     tags: ["Telemedicine", "Clinical decision support", "Multi-agent AI", "RAG", "Voice"],
     challenge: "A useful clinical assistant must turn text or voice symptoms into structured hypotheses, explain its reasoning, and keep the clinician in control. SympNet separates those responsibilities across services and presents the results in a doctor-facing workflow.",
     architecture: [
-      { title: "Patient client", items: ["Native Android app for symptom reporting and health record access", "Doctor discovery and appointment booking", "Prescription and medical-history views"] },
+      { title: "Patient and doctor workflows", items: ["Patient symptom reporting and medical-history access", "Doctor and appointment management through the clinical dashboard", "Prescription and consultation workflows"] },
       { title: "Clinical web services", items: ["ASP.NET Core 8 API and Blazor dashboard", "JWT roles for doctors and patients", "SignalR real-time notifications and consultation workflows"] },
       { title: "AI diagnostic service", items: ["FastAPI pipeline with symptom, hypothesis, validator, XAI, and confidence agents", "Llama 3 via Groq and Whisper voice transcription", "PubMed-informed RAG with PostgreSQL and pgvector"] },
       { title: "Safety and data", items: ["Prescription checks against patient allergies and history", "Explainable hypotheses with confidence scores", "AI positioned as decision support for the physician"] },
@@ -97,7 +97,7 @@ export const projectDetails: Record<string, ProjectDetailContent> = {
     impact: "A MERN platform combines course and media management with live collaboration, role-based access, and real-time notifications.",
     tags: ["E-learning", "Virtual classrooms", "Assessments", "Full-stack", "Real time"],
     architecture: [
-      { title: "Frontend", items: ["React 18 interface with Redux Toolkit state management", "Role-specific experiences for learners, instructors, and administrators", "Google OAuth 2.0 sign-in option"] },
+      { title: "Frontend", items: ["React interface with Redux Toolkit state management", "Role-specific experiences for learners, instructors, and administrators", "Course, assessment, and progress views"] },
       { title: "Backend and data", items: ["Node.js and Express REST API", "MongoDB data store", "JWT authentication and role-based access control"] },
       { title: "Learning features", items: ["Socket.IO real-time notifications", "Jitsi Meet and WebRTC virtual classes", "Cloudinary media management and PDF course materials"] },
       { title: "Assessments and delivery", items: ["Timed quizzes, exams, assignments, and retake workflows", "Automated grading and learner performance analytics", "Docker containerization and Agile Scrum delivery"] },

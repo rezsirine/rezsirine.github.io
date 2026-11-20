@@ -1,4 +1,4 @@
-import { FormEvent, ReactNode, useEffect, useState } from "react";
+import { FormEvent, PointerEvent as ReactPointerEvent, ReactNode, useEffect, useState } from "react";
 import { profile, projects, experienceProjects, skillGroups, dataScience, education, languages, certifications, strengths, type Project } from "./data";
 import { projectDetails } from "./projectDetails";
 
@@ -168,7 +168,10 @@ function ProjectDetail({ project, status, onSubmit, isExperience = false }: { pr
 
       {details?.architecture && (
         <section className="case-block">
-          <span className="eyebrow"><span>//</span> Architecture</span>
+          <div className="architecture-heading">
+            <span className="eyebrow"><span>//</span> Architecture</span>
+            <p>Project structure, key components, and the technologies behind each layer.</p>
+          </div>
           <div className="architecture-grid">{details.architecture.map((layer, index) => <article key={layer.title}><span className="architecture-index">0{index + 1}</span><h3>{layer.title}</h3><ul>{layer.items.map((item) => <li key={item}>{item}</li>)}</ul></article>)}</div>
         </section>
       )}
@@ -199,8 +202,22 @@ function ProjectDetail({ project, status, onSubmit, isExperience = false }: { pr
 }
 
 function ProjectCard({ project, experience = false }: { project: Project; experience?: boolean }) {
+  function moveCard(event: ReactPointerEvent<HTMLElement>) {
+    if (event.pointerType !== "mouse") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width;
+    const y = (event.clientY - bounds.top) / bounds.height;
+    event.currentTarget.style.setProperty("--tilt-x", `${(0.5 - y) * 3}deg`);
+    event.currentTarget.style.setProperty("--tilt-y", `${(x - 0.5) * 3}deg`);
+  }
+
+  function resetCard(event: ReactPointerEvent<HTMLElement>) {
+    event.currentTarget.style.setProperty("--tilt-x", "0deg");
+    event.currentTarget.style.setProperty("--tilt-y", "0deg");
+  }
+
   return (
-    <article className="project-card">
+    <article className="project-card" onPointerMove={moveCard} onPointerLeave={resetCard}>
       <div className="project-image project-visual">
         <div className="visual-grid" />
         <span className="visual-icon"><Icon name={project.icon} size={54} /></span>
@@ -262,6 +279,21 @@ export default function App() {
   const [activeProjectSlug, setActiveProjectSlug] = useState<string | null>(() => readProjectSlug(window.location.hash));
   const activeProject = [...projects, ...experienceProjects].find((project) => project.slug === activeProjectSlug);
   const activeProjectIsExperience = experienceProjects.some((project) => project.slug === activeProjectSlug);
+
+  function moveHeroCard(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== "mouse") return;
+    const card = event.currentTarget.querySelector<HTMLElement>(".profile-card");
+    if (!card) return;
+    const bounds = card.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    card.style.transform = `perspective(900px) rotateX(${y * -4}deg) rotateY(${x * 5}deg)`;
+  }
+
+  function resetHeroCard(event: ReactPointerEvent<HTMLDivElement>) {
+    const card = event.currentTarget.querySelector<HTMLElement>(".profile-card");
+    if (card) card.style.transform = "";
+  }
 
   useEffect(() => {
     const syncProjectRoute = () => {
@@ -372,10 +404,10 @@ export default function App() {
         {activeProject ? <ProjectDetail project={activeProject} status={formStatus} onSubmit={submitForm} isExperience={activeProjectIsExperience} /> : <>
         <section id="accueil" className="hero">
           <div className="hero-copy">
-            <div className="availability"><i /> Open to PFE opportunities · 2027</div>
+            <div className="availability"><i /> Seeking a PFE internship · 2027</div>
             <p className="intro-line">Hello, I’m</p>
             <h1>{profile.name}<span>.</span></h1>
-            <h2>Engineering thoughtful<br /><span>digital experiences.</span></h2>
+            <h2>Full-Stack<br />&amp; Applied AI</h2>
             <p className="hero-text">A final-year Software Engineering student turning complex challenges into <strong>reliable web products</strong> and <strong>applied AI solutions</strong>.</p>
             <div className="hero-actions">
               <a className="button primary" href="#projets">Explore my work <Icon name="arrow" /></a>
@@ -390,7 +422,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="hero-visual" aria-label="Sirine Rezgui profile">
+          <div className="hero-visual" aria-label="Sirine Rezgui profile" onPointerMove={moveHeroCard} onPointerLeave={resetHeroCard}>
             <div className="orbit orbit-one" />
             <div className="orbit orbit-two" />
             <div className="profile-card">
@@ -410,13 +442,13 @@ export default function App() {
               </div>
               <div className="profile-code">
                 <p><em>01</em> <b>const</b> sirine = {"{"}</p>
-                <p><em>02</em> &nbsp;&nbsp;craft: <strong>"Full-stack products"</strong>,</p>
-                <p><em>03</em> &nbsp;&nbsp;explore: <strong>"Applied AI"</strong>,</p>
-                <p><em>04</em> &nbsp;&nbsp;based: <strong>"Ariana, Tunisia"</strong></p>
+                <p><em>02</em> &nbsp;&nbsp;stack: <strong>"React · Node · Python"</strong>,</p>
+                <p><em>03</em> &nbsp;&nbsp;focus: <strong>"Applied AI"</strong>,</p>
+                <p><em>04</em> &nbsp;&nbsp;seeking: <strong>"Final-year internship"</strong></p>
                 <p><em>05</em> {"}"}</p>
               </div>
             </div>
-            <div className="experience-chip"><strong>01</strong><span>Software engineering<br />&amp; intelligent systems</span></div>
+            <div className="experience-chip"><strong>2027</strong><span>Final-year<br />internship</span></div>
             <div className="stack-chip"><Icon name="terminal" /><span>Build with purpose.<br /><strong>Learn continuously.</strong></span></div>
           </div>
           <a className="scroll-cue" href="#apropos"><span>Discover</span><i><Icon name="arrow" size={15} /></i></a>
