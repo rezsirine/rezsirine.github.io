@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 :root {
@@ -16,7 +17,7 @@
   --green: #79d6a8;
   --gradient: linear-gradient(115deg, #aa8cff, #68c7d9);
   --content: 1160px;
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -59,6 +60,8 @@ button { color: inherit; }
 .nav-links { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 32px); font-size: 11px; font-weight: 620; }
 .nav-links > a:not(.nav-cta) { color: var(--muted); transition: color .2s ease; }
 .nav-links > a:not(.nav-cta):hover { color: var(--text); }
+.nav-links > a.is-active:not(.nav-cta) { position: relative; color: var(--text); }
+.nav-links > a.is-active:not(.nav-cta)::after { position: absolute; right: 0; bottom: -9px; left: 0; height: 2px; border-radius: 2px; background: var(--accent); content: ""; }
 .nav-links a span { margin-right: 5px; color: var(--accent); font: 500 9px ui-monospace, monospace; }
 .nav-cta, .button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 45px; padding: 0 18px; border-radius: 9px; font-size: 11px; font-weight: 700; transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease; }
 .nav-cta { min-height: 39px; border: 1px solid color-mix(in srgb, var(--accent) 44%, var(--line)); color: var(--text); }
@@ -68,9 +71,12 @@ button { color: inherit; }
 .theme-toggle:hover { transform: translateY(-2px); border-color: var(--accent); }
 .theme-toggle span { color: var(--accent); font-size: 17px; line-height: 1; }
 .menu-button { display: none; width: 42px; height: 42px; place-items: center; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); cursor: pointer; }
+.skip-link { position: fixed; z-index: 100; top: 10px; left: 12px; padding: 11px 15px; transform: translateY(-150%); border: 1px solid var(--accent); border-radius: 8px; background: var(--surface); color: var(--text); font-size: 12px; font-weight: 700; transition: transform .2s ease; }
+.skip-link:focus { transform: translateY(0); }
 
 /* Hero */
 .hero { position: relative; display: grid; grid-template-columns: 1.08fr .92fr; align-items: center; gap: clamp(35px, 7vw, 92px); width: min(var(--content), calc(100% - 56px)); min-height: min(760px, calc(100svh - 78px)); margin: 0 auto; padding: 65px 0 90px; }
+.hero h1, .hero h2, .section-heading h2, .project-info h3, .case-heading h1, .case-block h2, .timeline-item h3, .contact-copy h2 { font-family: "Space Grotesk", "Inter", sans-serif; }
 .hero::before { content: ""; position: absolute; z-index: -1; top: 7%; right: -18%; width: 650px; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 12%, transparent), transparent 68%); pointer-events: none; }
 .hero-copy { position: relative; z-index: 2; animation: enter-up .8s cubic-bezier(.2,.75,.25,1) both; }
 .availability { display: inline-flex; align-items: center; gap: 9px; padding: 8px 12px; border: 1px solid color-mix(in srgb, var(--green) 24%, transparent); border-radius: 99px; background: color-mix(in srgb, var(--green) 8%, transparent); color: var(--green); font: 600 9px ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; }
@@ -400,6 +406,7 @@ footer p, .back-top { color: var(--quiet); font-size: 9px; }
   .nav-links { position: absolute; top: calc(100% + 8px); right: 16px; left: 16px; display: none; align-items: stretch; gap: 4px; padding: 13px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); box-shadow: 0 20px 55px rgba(0,0,0,.22); }
   .nav-links.open { display: flex; flex-direction: column; }
   .nav-links > a:not(.nav-cta) { padding: 11px 10px; }
+  .nav-links > a.is-active:not(.nav-cta)::after { right: auto; bottom: 5px; left: 10px; width: 24px; }
   .nav-links > a:not(.nav-cta) span { display: inline; }
   .nav-cta { margin-top: 5px; }
   .hero { grid-template-columns: 1fr; width: min(100% - 40px, 580px); gap: 10px; min-height: auto; padding: 65px 0 74px; }

@@ -276,6 +276,7 @@ export default function App() {
   const [theme, setTheme] = useState<"dark" | "light">(() => (localStorage.getItem("sirine-theme") as "dark" | "light") || "dark");
   const [formStatus, setFormStatus] = useState<FormStatus>("idle");
   const [experienceMode, setExperienceMode] = useState<"cards" | "list">("cards");
+  const [activeSection, setActiveSection] = useState("accueil");
   const [activeProjectSlug, setActiveProjectSlug] = useState<string | null>(() => readProjectSlug(window.location.hash));
   const activeProject = [...projects, ...experienceProjects].find((project) => project.slug === activeProjectSlug);
   const activeProjectIsExperience = experienceProjects.some((project) => project.slug === activeProjectSlug);
@@ -361,6 +362,19 @@ export default function App() {
     return () => observer.disconnect();
   }, [activeProjectSlug]);
 
+  useEffect(() => {
+    const ids = ["apropos", "experience", "projets", "competences", "education", "contact"];
+    const sections = ids.map((id) => document.getElementById(id)).filter((element): element is HTMLElement => Boolean(element));
+    const observer = new IntersectionObserver((entries) => {
+      const current = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((left, right) => left.boundingClientRect.top - right.boundingClientRect.top)[0];
+      if (current) setActiveSection(current.target.id);
+    }, { rootMargin: "-20% 0px -68% 0px", threshold: 0 });
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [activeProjectSlug, experienceMode]);
+
   async function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formElement = event.currentTarget;
@@ -394,6 +408,7 @@ export default function App() {
   return (
     <div className="site-shell" onPointerMove={trackCursor}>
       <div className="cursor-aura" aria-hidden="true" />
+      <a className="skip-link" href="#main-content">Skip to content</a>
       {(formStatus === "success" || formStatus === "error") && (
         <div className={`form-toast ${formStatus}`} role={formStatus === "success" ? "status" : "alert"} aria-live={formStatus === "success" ? "polite" : "assertive"}>
           <span className="toast-mark" aria-hidden="true">{formStatus === "success" ? "✓" : "!"}</span>
@@ -410,10 +425,10 @@ export default function App() {
           <span className="brand-mark">&lt;SR/&gt;</span>
           <span>Sirine<span className="muted">.dev</span></span>
         </a>
-        <nav className={`${menuOpen ? "nav-links open" : "nav-links"}${activeProject ? " project-nav" : ""}`} aria-label="Main navigation">
+        <nav id="primary-navigation" className={`${menuOpen ? "nav-links open" : "nav-links"}${activeProject ? " project-nav" : ""}`} aria-label="Main navigation">
           {activeProject && <a className="project-nav-back" href={activeProjectIsExperience ? "#experience" : "#projets"} onClick={() => setMenuOpen(false)}><Icon name="arrow" size={14} /> {activeProjectIsExperience ? "Experience" : "Academic projects"}</a>}
           {[["About", "apropos"], ["Experience", "experience"], ["Projects", "projets"], ["Skills", "competences"]].map(([label, id], index) => (
-            <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
+            <a key={id} href={`#${id}`} className={activeSection === id ? "is-active" : undefined} aria-current={activeSection === id ? "location" : undefined} onClick={() => setMenuOpen(false)}>
               <span>0{index + 1}.</span>{label}
             </a>
           ))}
@@ -422,12 +437,12 @@ export default function App() {
         <button className="theme-toggle" type="button" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`} title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}>
           <span aria-hidden="true">{theme === "dark" ? "☼" : "☾"}</span><small>{theme === "dark" ? "Light" : "Dark"}</small>
         </button>
-        <button className="menu-button" type="button" aria-label={menuOpen ? "Close menu" : "Open menu"} onClick={() => setMenuOpen(!menuOpen)}>
+        <button className="menu-button" type="button" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="primary-navigation" onClick={() => setMenuOpen(!menuOpen)}>
           <Icon name={menuOpen ? "x" : "menu"} size={22} />
         </button>
       </header>
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         {activeProject ? <ProjectDetail project={activeProject} status={formStatus} onSubmit={submitForm} isExperience={activeProjectIsExperience} /> : <>
         <section id="accueil" className="hero">
           <div className="hero-copy">
@@ -461,7 +476,7 @@ export default function App() {
               <div className="avatar-frame">
                 <div className="avatar-glow" />
                 <div className="avatar">
-                  <img className="avatar-photo" src={`${import.meta.env.BASE_URL}images/profile.jpg.png`} alt="Portrait of Sirine Rezgui" onLoad={(event) => { const fallback = event.currentTarget.nextElementSibling as HTMLElement | null; if (fallback) fallback.style.display = "none"; }} onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                  <img className="avatar-photo" src={`${import.meta.env.BASE_URL}images/profile.webp`} alt="Portrait of Sirine Rezgui" width="433" height="577" decoding="async" fetchPriority="high" onLoad={(event) => { const fallback = event.currentTarget.nextElementSibling as HTMLElement | null; if (fallback) fallback.style.display = "none"; }} onError={(event) => { event.currentTarget.style.display = "none"; }} />
                   <span>{profile.initials}</span>
                 </div>
                 <div className="floating-tag tag-react">&lt;/&gt;</div>
