@@ -3,17 +3,17 @@ export const profile = {
   name: "Sirine Rezgui",
   firstName: "Sirine",
   initials: "SR",
-  title: "Software Engineering Student | Advanced Intelligent Systems Graduate",
+  title: "Software Engineering Student | Smart Systems Master's Graduate",
   email: "sirine.rezgui@ensi-uma.tn",
   phone: "+216 55194119",
   phoneHref: "+216 55194119",
   location: "Ariana, Tunisia",
   linkedinLabel: "LinkedIn",
-  linkedin: "" as string,
+  linkedin: "https://www.linkedin.com/in/sirine-rezgui/",
   github: "https://github.com/rezsirine",
   cvEn: `${import.meta.env.BASE_URL}cv_en.pdf`,
   cvFr: `${import.meta.env.BASE_URL}cv_fr.pdf`,
-  summary: "Final-year Software Engineering student and graduate in Advanced Intelligent Systems, with a foundation in software development, information systems, and applied AI. I have hands-on experience building web applications, data-driven dashboards, and AI features in collaborative project teams. I am seeking a final-year internship in software engineering, information systems, or applied AI.",
+  summary: "Final-year Software Engineering student and Master's graduate in Smart Systems, with a strong foundation in software development and information systems. Experienced in building web applications and collaborating in agile project teams. Adaptable, proactive, and quick to learn, with an interest in digital product design and applied AI. Seeking a final-year project (PFE) internship in software engineering, information systems, or applied AI.",
 };
 
 export type Project = {
@@ -29,17 +29,17 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "smartfactory-twin", index: "01", category: "Industry · Predictive Maintenance", title: "SmartFactory Twin",
-    org: "TEK-UP University", period: "September — December 2026",
+    org: "TEK-UP University", period: "September 2026 — Present",
     description: "An industrial monitoring platform for asset and sensor management, alerts, work orders, visual inspections, and predictive maintenance.",
-    features: ["Role-based access with JWT and audit logging; 321 backend and 180 frontend tests.", "Anomaly detection trained on the SKAB pump benchmark with grouped cross-validation; gradient boosting reached F1 0.81 ± 0.08 (0.69 on held-out runs) and 0.4% false positives.", "Remaining useful life estimation on NASA C-MAPSS, Isolation Forest analysis on MetroPT-3, and YOLO-based visual inspection."],
-    tags: ["React", "Django REST", "scikit-learn", "YOLO", "Docker", "Testing"], disciplines: ["Full-Stack", "AI", "Data"], outcome: "F1 0.81 ± 0.08 in grouped validation · 0.4% false positives", github: "https://github.com/orgs/smartfactory-twin/repositories", icon: "brain",
+    features: ["Industrial monitoring for sensors, alerts, work orders, AI-assisted inspections, voice workflows, and role-based access.", "Automated API, authorization, alert, AI readiness, and inspection tests.", "SKAB anomaly detection (F1 0.81 ± 0.08 in cross-validation; 0.69 on held-out data), plus NASA C-MAPSS RUL and MetroPT-3 benchmarks.", "Terraform infrastructure, Ansible and Kubernetes deployment, and Grafana monitoring."],
+    tags: ["React", "Django REST", "scikit-learn", "YOLO", "Docker Compose", "Terraform", "Ansible", "Kubernetes", "Grafana"], disciplines: ["Full-Stack", "AI", "Data"], outcome: "F1 0.81 ± 0.08 in cross-validation · 0.69 on held-out data", github: "https://github.com/orgs/smartfactory-twin/repositories", icon: "brain",
   },
   {
     slug: "sympnet-cdss", index: "02", category: "Healthcare · Multi-Agent Systems", title: "Sympnet-CDSS",
     org: "TEK-UP University", period: "January — May 2026",
     description: "A telemedicine and clinical decision-support platform built on a microservices architecture with a multi-agent AI copilot.",
-    features: [".NET 8 and Blazor application with role-based JWT authentication for doctors and patients.", "Real-time SignalR notifications, Whisper transcription, and prescription validation against PubMed guidance.", "AI diagnostic copilot (FastAPI, Llama 3, pgvector RAG) and clinical dashboard."],
-    tags: ["ASP.NET Core", "Blazor", "FastAPI", "Llama 3", "RAG", "pgvector"], disciplines: ["Full-Stack", "AI", "Data"], github: "https://github.com/orgs/Sympnet-CDSS/repositories", icon: "heart",
+    features: ["Microservices telemedicine platform using .NET 8 and Blazor, with role-based JWT authentication.", "Real-time SignalR notifications and Whisper voice transcription; prescription checks use medical literature retrieved from PubMed.", "Clinical appointment dashboard and multi-agent diagnostic copilot using FastAPI, Llama 3, and pgvector RAG."],
+    tags: ["ASP.NET Core", "Blazor", "Python", "FastAPI", "Llama 3", "RAG", "pgvector"], disciplines: ["Full-Stack", "AI", "Data"], github: "https://github.com/orgs/Sympnet-CDSS/repositories", icon: "heart",
   },
   {
     slug: "erp-rh", index: "03", category: "HR · ERP & Generative AI", title: "ERP_RH",
@@ -64,7 +64,6 @@ export const skillGroups: SkillGroup[] = [
     { name: "HTML5", iconPath: "html5/html5-original.svg", level: "Comfortable" },
     { name: "CSS3", iconPath: "css3/css3-original.svg", level: "Comfortable" },
     { name: "Bootstrap", iconPath: "bootstrap/bootstrap-original.svg", level: "Applied" },
-    { name: "React Native", iconPath: "react/react-original.svg", level: "Learning" },
     { name: "Flutter", iconPath: "flutter/flutter-original.svg", level: "Learning" },
   ] },
   { title: "Backend", items: [
@@ -89,18 +88,28 @@ export const skillGroups: SkillGroup[] = [
   ] },
   { title: "DevOps", items: [
     { name: "Docker", iconPath: "docker/docker-original.svg", level: "Applied" },
+    { name: "Docker Compose", level: "Applied" },
     { name: "Git", iconPath: "git/git-original.svg", level: "Comfortable" },
     { name: "GitHub Actions", iconPath: "githubactions/githubactions-original.svg", level: "Applied" },
     { name: "CI/CD", level: "Applied" },
+    { name: "Terraform", level: "Applied" },
+    { name: "Ansible", level: "Applied" },
+    { name: "Kubernetes", level: "Applied" },
+    { name: "Grafana", level: "Applied" },
   ] },
   { title: "Tools & Data", items: [
     { name: "PostgreSQL", iconPath: "postgresql/postgresql-original.svg", level: "Applied" },
     { name: "MySQL", iconPath: "mysql/mysql-original.svg", level: "Applied" },
     { name: "MongoDB", iconPath: "mongodb/mongodb-original.svg", level: "Applied" },
+    { name: "Sequelize", level: "Applied" },
+    { name: "Mongoose", level: "Applied" },
+    { name: "Prisma", level: "Applied" },
     { name: "Firebase", iconPath: "firebase/firebase-original.svg", level: "Learning" },
     { name: "WebSockets", level: "Applied" },
     { name: "WebRTC", level: "Applied" },
     { name: "JWT / OAuth2", level: "Applied" },
+    { name: "2FA / CSRF protection", level: "Applied" },
+    { name: "OpenAPI 3.0", level: "Applied" },
     { name: "Swagger / OpenAPI", level: "Applied" },
     { name: "Postman", iconPath: "postman/postman-original.svg", level: "Comfortable" },
     { name: "Jira", iconPath: "jira/jira-original.svg", level: "Comfortable" },
@@ -119,14 +128,14 @@ export const experienceProjects: Project[] = [
     slug: "hr-trainer", index: "02", category: "Full-Stack Internship · EdTech", title: "HR Training",
     org: "3LM Solutions", period: "July — August 2026",
     description: "An AI-enhanced e-learning platform that helps learners during live lessons and automates repetitive course preparation for instructors.",
-    features: ["Live WebRTC lecture transcription with Whisper and a retrieval-augmented learning copilot.", "AI-assisted syllabus and quiz generation using LLaMA models through Groq.", "NextAuth role-based access for learners, instructors, and administrators."],
+    features: ["Integrated Whisper speech recognition into an AI chatbot so learners can speak with a virtual tutor.", "Built RAG over PDF course materials and automated quiz and syllabus generation with LLaMA 3 via Groq JSON mode.", "Delivered a full-stack LMS with NextAuth RBAC, Docker, CI/CD, and an administration dashboard."],
     tags: ["Next.js", "Express", "PostgreSQL", "Prisma", "Groq", "LLaMA 3", "Whisper", "WebRTC", "Docker"], disciplines: ["Full-Stack", "AI", "Data"], github: "https://github.com/orgs/HR-Trainer/repositories", icon: "brain",
   },
   {
     slug: "e-learning-app", index: "03", category: "Full-Stack Internship · E-Learning", title: "E-Learning App",
     org: "UDG Group", period: "June — August 2025",
     description: "A learning platform for students, instructors, and administrators, combining course delivery, live classes, assessments, and real-time updates.",
-    features: ["Role-based authentication and administration tools for users and courses.", "Live virtual classrooms with Jitsi Meet and WebRTC, plus Socket.IO notifications.", "Timed quizzes, assignments, exams, and course media managed through Cloudinary."],
+    features: ["Developed a full-stack learning application with React, Redux, and Node.js, using role-based JWT authentication.", "Integrated real-time notifications with Socket.IO and media management with Cloudinary.", "Created an administration dashboard for managing users and courses, improving application usability."],
     tags: ["React", "Redux Toolkit", "Node.js", "Express", "MongoDB", "Socket.IO", "Jitsi Meet", "WebRTC", "Cloudinary"], disciplines: ["Full-Stack", "Data"], github: "https://github.com/E-learningApplication/E-learning", icon: "users",
   },
   {
@@ -140,11 +149,11 @@ export const experienceProjects: Project[] = [
 
 export const education = [
   { school: "TEK-UP University", degree: "Engineering Degree in Software Engineering", period: "2025 — 2027" },
-  { school: "National School of Computer Science (ENSI)", degree: "Master's Degree in Advanced Intelligent Systems", period: "2024 — 2026" },
+  { school: "National School of Computer Science (ENSI)", degree: "Master's Degree in Smart Systems", period: "2024 — 2026" },
   { school: "Higher Institute of Applied Science and Technology of Mateur", degree: "Bachelor's Degree in Computer Science — Software Engineering and Information Systems", period: "2021 — 2024" },
   { school: "Hassan Hosny Abdelwaheb High School", degree: "Baccalaureate in Experimental Sciences", period: "2017 — 2021" },
 ];
 
 export const certifications = ["Full-Stack JavaScript Development — RBK", "Large Language Models (LLMs) Concepts — DataCamp"];
 export const strengths = ["Problem-solving", "Adaptability", "Fast learning", "Autonomy", "Team collaboration", "Attention to detail", "Initiative"];
-export const languages = ["Arabic · Native", "French · Bilingual / Full professional proficiency", "English · Working proficiency", "German · Basic"];
+export const languages = ["Arabic · Native", "French · Full professional proficiency", "English · Professional working proficiency", "German · Basic"];
